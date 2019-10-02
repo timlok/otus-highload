@@ -39,11 +39,15 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/)\
 БД: sysbench, pgbench, HammerDB\
 всё: [https://jmeter.apache.org/](https://jmeter.apache.org/) (redis)
 
+## Схема проекта
+
+![HA.png](scheme/HA.png)
+
 ## Заметки
 
 Кластер postgresql отказоустойчивый, но ему необходима очередь запросов - pgbouncer?
 
-Кластер zabbix, построенный с помощью pacemaker/corosync по-умолчанию находится в режиме active/passive и будет устойчив к сбоям, но не будет распределять нагрузку. Для распределения нагрузки необходим кластер active/active с клонированием ресурсов, которые должны быть запущенв одновременно на всех нодах кластера.
+Кластер zabbix, построенный с помощью pacemaker/corosync по-умолчанию находится в режиме active/passive и будет устойчив к сбоям, но не будет распределять нагрузку. Для распределения нагрузки необходим кластер active/active с клонированием ресурсов, которые должны быть запущены одновременно на всех нодах кластера.
 
 ACL для haproxy от ddos
 
@@ -56,7 +60,3 @@ acl save  sc0_clr_gpc0 ge 0
 tcp-request connection accept if !abuse save
 tcp-request connection reject if abuse kill
 ```
-
-## Схема проекта
-
-![HA.png](HA.png)
