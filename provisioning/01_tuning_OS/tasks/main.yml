@@ -74,6 +74,12 @@
     state: started
     enabled: yes
 
+- name: firewalld disable
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
 - name: set the russian locale
   shell: |
     localedef  -i ru_RU -f UTF-8 ru_RU.UTF-8
