@@ -5,39 +5,39 @@
 > организация HighLoad стэнда\
 > поднимаем вебпроект\
 > строим нагрузочное тестирование\
-> делаем скрипты для оптимизации инфраструктуры\
-> \1) sysctl\
-> \2) кластеризация веба\
-> \3) оптимизация, проксирование и кластеризация базы
+> делаем скрипты для оптимизации инфраструктуры
+> 1) sysctl
+> 2) кластеризация веба
+> 3) оптимизация, проксирование и кластеризация базы
 
 ## Наброски архитектуры
 
-сервера:
-точка входа http и веб-прокси (2 штуки) - haproxy/keepalived или nginx
-веб (2 штуки) - приложение zabbix или glaber (pacemaker/corosync + apache или nginx+php-fpm)
-БД прокси (1 или 2 штуки) - pgbouncer
-БД кластер (4 штуки) - postgresql+patroni+etcd
+сервера:\
+точка входа http и веб-прокси (2 штуки) - haproxy/keepalived или nginx\
+веб (2 штуки) - приложение zabbix или glaber (pacemaker/corosync + apache или nginx+php-fpm)\
+БД прокси (1 или 2 штуки) - pgbouncer\
+БД кластер (4 штуки) - postgresql+patroni+etcd\
 или postgresql + consul на серверах с pgbouncer
 
-очереди - rabbitmq/NATS/kafka
-NATS:
-[https://nats-io.github.io/docs/nats_streaming/gettingstarted/run.html](https://nats-io.github.io/docs/nats_streaming/gettingstarted/run.html)
-[https://blindwarf.com/post/nats-io/](https://blindwarf.com/post/nats-io/)
-[https://habr.com/ru/post/466263/](https://habr.com/ru/post/466263/)
+очереди - rabbitmq/NATS/kafka\
+NATS:\
+[https://nats-io.github.io/docs/nats_streaming/gettingstarted/run.html](https://nats-io.github.io/docs/nats_streaming/gettingstarted/run.html)\
+[https://blindwarf.com/post/nats-io/](https://blindwarf.com/post/nats-io/)\
+[https://habr.com/ru/post/466263/](https://habr.com/ru/post/466263/)\
 [https://github.com/devfacet/natsboard](https://github.com/devfacet/natsboard)
 
-или
+или\
 кэш - redis или memcached
 
-При всём при этом, в zabbix (glaber) будет мониторинг всех ресурсов всех хостов + мониторинг БД + мониторинг nginx. Соответственно, при проведении тестов можно будет наглядно увидеть нагрузку на все хосты и на БД.
+При всём при этом, в zabbix (glaber) будет мониторинг всех ресурсов всех хостов + мониторинг БД + мониторинг nginx. Соответственно, при проведении тестов можно будет наглядно увидеть нагрузку на все хосты и на БД.\
 Подключить в zabbix haproxy?
 
 ## Тесты
 
-можно использовать что-нибудь из этого:
-http: яндекс.танк, [https://locust.io/](https://locust.io/)
-БД: sysbench, pgbench, HammerDB
-всё: [https://jmeter.apache.org/](https://jmeter.apache.org/) (redis)
+можно использовать что-нибудь из этого:\
+http: яндекс.танк, [https://locust.io/](https://locust.io/)\
+БД: sysbench, pgbench, HammerDB\
+всё: [https://jmeter.apache.org/](https://jmeter.apache.org/) (redis)\
 
 ## Заметки
 
