@@ -1,0 +1,7 @@
+haproxy ansible_host=127.0.0.1 ansible_port=2321 ansible_private_key_file=.vagrant/machines/haproxy/virtualbox/private_key
+etcd ansible_host=127.0.0.1 ansible_port=2421 ansible_private_key_file=.vagrant/machines/etcd/virtualbox/private_key
+pg01 ansible_host=127.0.0.1 ansible_port=2521 ansible_private_key_file=.vagrant/machines/pg01/virtualbox/private_key
+pg02 ansible_host=127.0.0.1 ansible_port=2621 ansible_private_key_file=.vagrant/machines/pg02/virtualbox/private_key
+pg03 ansible_host=127.0.0.1 ansible_port=2721 ansible_private_key_file=.vagrant/machines/pg03/virtualbox/private_key
+zabbix01 ansible_host=127.0.0.1 ansible_port=2821 ansible_private_key_file=.vagrant/machines/zabbix01/virtualbox/private_key
+zabbix02 ansible_host=127.0.0.1 ansible_port=2921 ansible_private_key_file=.vagrant/machines/zabbix02/virtualbox/private_key

@@ -1,0 +1,6 @@
+- name: 01_tuning_OS
+  hosts: all
+  become: true
+
+  roles:
+   - 01_tuning_OS

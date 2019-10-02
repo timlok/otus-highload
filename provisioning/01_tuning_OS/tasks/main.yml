@@ -1,0 +1,82 @@
+---
+- name: install epel
+  yum:
+    name:
+    - epel-release
+
+- name: install packages
+  yum:
+    name:
+      - libselinux-python
+      - vim
+      - vim-enhanced
+      - mc
+      - screen
+      - ccze
+#      - lnav
+      - redhat-lsb-core
+      - wget
+      - yum-utils
+      - htop
+      - sudo
+      - iftop
+      - net-tools
+      - elinks
+      - lynx
+      - bind-utils
+      - deltarpm
+      - lsof
+      - tree
+      - traceroute
+      - tcpdump
+      - nmap
+      - unzip
+#      - iperf3
+      - lbzip2
+#      - fuse-sshfs
+    state: latest
+
+- name: copy .screenrc
+  copy: src=screenrc dest=/root/.screenrc owner=root group=root mode=0600
+- name: edit bashrc, vimrc
+  shell: echo "alias vi='vim'" >> /root/.bashrc && echo "colorscheme desert" >> /etc/vimrc
+
+- name: set timezone to Asia/Novosibirsk
+#- name: set timezone to Europe/Moscow
+  timezone:
+    name: Asia/Novosibirsk
+#    name: Europe/Moscow
+
+- name: put SELinux in permissive mode
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: add mappings to /etc/hosts
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      {{ item.ip }} {{ item.name }} {{ item.name }}.otus
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+  with_items:
+  - { name: haproxy, ip: 192.168.11.100 }
+  - { name: pg01, ip: 192.168.11.151 }
+  - { name: pg02, ip: 192.168.11.152 }
+  - { name: pg03, ip: 192.168.11.153 }
+  - { name: etcd, ip: 192.168.11.160 }
+  - { name: zabbix01, ip: 192.168.11.21 }
+  - { name: zabbix02, ip: 192.168.11.22 }
+  - { name: zabbixvip, ip: 192.168.11.25 }
+
+- name: chronyd start and enable
+  systemd:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: set the russian locale
+  shell: |
+    localedef  -i ru_RU -f UTF-8 ru_RU.UTF-8
+    localectl set-locale LANG=ru_RU.UTF-8
+  notify:
+    - system restart

@@ -1,0 +1,3 @@
+pg01 ansible_host=127.0.0.1 ansible_port=2521 ansible_private_key_file=.vagrant/machines/pg01/virtualbox/private_key
+pg02 ansible_host=127.0.0.1 ansible_port=2621 ansible_private_key_file=.vagrant/machines/pg02/virtualbox/private_key
+pg03 ansible_host=127.0.0.1 ansible_port=2721 ansible_private_key_file=.vagrant/machines/pg03/virtualbox/private_key

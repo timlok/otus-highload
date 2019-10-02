@@ -1,0 +1,2 @@
+zabbix01 ansible_host=127.0.0.1 ansible_port=2821 ansible_private_key_file=.vagrant/machines/zabbix01/virtualbox/private_key
+zabbix02 ansible_host=127.0.0.1 ansible_port=2921 ansible_private_key_file=.vagrant/machines/zabbix02/virtualbox/private_key

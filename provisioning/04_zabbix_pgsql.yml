@@ -1,0 +1,8 @@
+- name: 04_zabbix_pgsql
+  hosts:
+    - zabbix01
+    - zabbix02
+  become: true
+
+  roles:
+    - 04_zabbix_pgsql

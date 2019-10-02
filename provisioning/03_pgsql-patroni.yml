@@ -1,0 +1,9 @@
+- name: 03_pgsql-patroni
+  hosts:
+    - pg01
+    - pg02
+    - pg03
+  become: true
+
+  roles:
+    - 03_pgsql-patroni

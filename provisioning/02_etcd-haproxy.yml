@@ -1,0 +1,9 @@
+- name: 02_etcd-haproxy
+  hosts:
+   - etcd
+   - haproxy
+  become: true
+
+  roles:
+    - 02_etcd
+    - 02_haproxy
