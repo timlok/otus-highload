@@ -56,3 +56,7 @@ acl save  sc0_clr_gpc0 ge 0
 tcp-request connection accept if !abuse save
 tcp-request connection reject if abuse kill
 ```
+
+## Схема проекта
+
+![HA.png](HA.png)
