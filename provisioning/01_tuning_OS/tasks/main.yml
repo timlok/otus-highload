@@ -59,7 +59,11 @@
       {{ item.ip }} {{ item.name }} {{ item.name }}.otus
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   with_items:
-  - { name: haproxy, ip: 192.168.11.100 }
+  - { name: hl-client, ip: 10.51.21.70 }
+  - { name: hl-haproxy01, ip: 10.51.21.50 }
+  - { name: hl-haproxy02, ip: 10.51.21.51 }
+  - { name: hl-mq01, ip: 10.51.21.52 }
+  - { name: hl-mq02, ip: 10.51.21.53 }
   - { name: pg01, ip: 192.168.11.151 }
   - { name: pg02, ip: 192.168.11.152 }
   - { name: pg03, ip: 192.168.11.153 }
