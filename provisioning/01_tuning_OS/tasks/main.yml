@@ -31,6 +31,7 @@
       - tcpdump
       - nmap
       - unzip
+      - bash-completion
 #      - iperf3
       - lbzip2
 #      - fuse-sshfs
