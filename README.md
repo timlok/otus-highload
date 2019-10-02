@@ -37,7 +37,7 @@ NATS:\
 можно использовать что-нибудь из этого:\
 http: яндекс.танк, [https://locust.io/](https://locust.io/)\
 БД: sysbench, pgbench, HammerDB\
-всё: [https://jmeter.apache.org/](https://jmeter.apache.org/) (redis)\
+всё: [https://jmeter.apache.org/](https://jmeter.apache.org/) (redis)
 
 ## Заметки
 
