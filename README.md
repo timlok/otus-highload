@@ -41,7 +41,11 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/)\
 
 ## Схема проекта
 
-![HA.png](scheme/HA.png)
+текущая схема проекта
+![scheme_current.png](scheme/scheme_current.png)
+
+целевая схема проекта
+![scheme_target.png](scheme/scheme_target.png)
 
 ## Заметки
 
