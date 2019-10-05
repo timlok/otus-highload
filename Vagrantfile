@@ -152,14 +152,14 @@ Vagrant.configure("2") do |config|
           ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
         end
-        #box.vm.provision "ansible" do |ansible|
-        #  ansible.verbose = "v"
-        #  ansible.playbook = "provisioning/HA/05_zabbix.yml"
-        #  ansible.inventory_path = "provisioning/HA/hosts"
-        #  ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-        #  ansible.extra_vars = "provisioning/HA/variables"
-        #  ansible.become = "true"
-        #end
+        box.vm.provision "ansible" do |ansible|
+          ansible.verbose = "v"
+          ansible.playbook = "provisioning/HA/05_zabbix.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
+          ansible.become = "true"
+        end
         #box.vm.provision "ansible" do |ansible|
         #  ansible.verbose = "v"
         #  ansible.playbook = "provisioning/HA/05_create_database.yml"
