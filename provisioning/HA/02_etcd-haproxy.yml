@@ -1,9 +1,15 @@
-- name: 02_etcd-haproxy
+- name: 02_etcd
   hosts:
-   - etcd
-   - haproxy
+    - hl-etcd
+    - HLetcd
   become: true
-
   roles:
     - 02_etcd
+
+- name: 02_haproxy
+  hosts:
+    - hl-pg-haproxy
+    - HLpgHaproxy
+  become: true
+  roles:
     - 02_haproxy

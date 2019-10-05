@@ -1,0 +1,71 @@
+---
+#zabbix
+IP_ZAB_CLUSTER: '10.51.21.56'
+PASS_ZAB_FOR_DB: 'zabb_xPas5'
+PORT_FOR_DB_CLIENT: '5000'
+
+#postgres
+PASS_POSTGRES_FOR_DB: 'gfhjkm'
+NET_POSTGRES_ALLOW: '10.51.21.0/24'
+
+#домен
+FAKE_DOMAIN: 'otus'
+
+#хосты
+HOST_NAME_HL_CLIENT: 'hl-client'
+HOST_IP_HL_CLIENT: '10.51.21.70'
+
+HOST_NAME_HA_VIP: 'hl-haproxy-vip'
+HOST_IP_HA_VIP: '10.51.21.50'
+
+HOST_NAME_HA_01: 'hl-haproxy01'
+HOST_IP_HA_01: '10.51.21.51'
+
+HOST_NAME_HA_02: 'hl-haproxy02'
+HOST_IP_HA_02: '10.51.21.52'
+
+HOST_NAME_MQ_01: 'hl-mq01'
+HOST_IP_MQ_01: '10.51.21.53'
+
+HOST_NAME_MQ_02: 'hl-mq02'
+HOST_IP_MQ_02: '10.51.21.54'
+
+#свободен 10.51.21.55
+
+HOST_NAME_WEB_VIP: 'hl-zabbix-vip'
+HOST_IP_WEB_VIP: '10.51.21.56'
+
+HOST_NAME_WEB01: 'hl-zabbix01'
+HOST_IP_WEB01: '10.51.21.57'
+
+HOST_NAME_WEB02: 'hl-zabbix02'
+HOST_IP_WEB02: '10.51.21.58'
+
+#временный
+HOST_NAME_PG_HAPROXY: 'hl-pg-haproxy'
+HOST_IP_PG_HAPROXY: '10.51.21.59'
+
+HOST_NAME_PG_CON_POOL_VIP: 'hl-pg-conpool-vip'
+HOST_IP_PG_CON_POOL_VIP: '10.51.21.60'
+
+HOST_NAME_PG_CON_POOL_01: 'hl-pg-conpool01'
+HOST_IP_PG_CON_POOL_01: '10.51.21.61'
+
+HOST_NAME_PG_CON_POOL_02: 'hl-pg-conpool02'
+HOST_IP_PG_CON_POOL_02: '10.51.21.62'
+
+HOST_NAME_PG_CON_POOL_03: 'hl-pg-conpool03'
+HOST_IP_PG_CON_POOL_03: '10.51.21.63'
+
+#временный
+HOST_NAME_DCS: 'hl-etcd'
+HOST_IP_DCS: '10.51.21.64'
+
+HOST_NAME_PG01: 'hl-pg01'
+HOST_IP_PG01: '10.51.21.65'
+
+HOST_NAME_PG02: 'hl-pg02'
+HOST_IP_PG02: '10.51.21.66'
+
+HOST_NAME_PG03: 'hl-pg03'
+HOST_IP_PG03: '10.51.21.67'

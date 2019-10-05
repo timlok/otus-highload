@@ -83,6 +83,6 @@ listen postgres
         option httpchk
         http-check expect status 200
         default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
-        server postgresql_pg01_5432 pg01:5432 maxconn 100 check port 8008
-        server postgresql_pg02_5432 pg02:5432 maxconn 100 check port 8008
-        server postgresql_pg03_5432 pg03:5432 maxconn 100 check port 8008
+        server postgresql_pg01_5432 {{ HOST_NAME_PG01 }}.{{ FAKE_DOMAIN }}:5432 maxconn 100 check port 8008
+        server postgresql_pg02_5432 {{ HOST_NAME_PG02 }}.{{ FAKE_DOMAIN }}:5432 maxconn 100 check port 8008
+        server postgresql_pg03_5432 {{ HOST_NAME_PG03 }}.{{ FAKE_DOMAIN }}:5432 maxconn 100 check port 8008

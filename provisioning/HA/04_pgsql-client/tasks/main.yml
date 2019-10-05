@@ -19,8 +19,10 @@
       - lynx
     state: latest
 
-#- name: copy pgpass
-#  copy: src=pgpass dest=/home/vagrant/.pgpass owner=vagrant group=vagrant mode=0600
-
-- name: copy pgpass
-  copy: src=pgpass dest=/root/.pgpass owner=root group=root mode=0600
+- name: put pgpass template
+  template:
+    src: pgpass.j2
+    dest: /root/.pgpass
+    owner: root
+    group: root
+    mode: 0600

@@ -1,4 +1,4 @@
-scope: otus
+scope: {{ FAKE_DOMAIN }}
 name: {{ ansible_hostname }}
 
 restapi:
@@ -6,7 +6,7 @@ restapi:
     connect_address: {{ ansible_eth1.ipv4.address }}:8008
 
 etcd:
-    host: etcd:2379
+    host: {{ HOST_NAME_DCS }}.{{ FAKE_DOMAIN }}:2379
 
 bootstrap:
     dcs:
@@ -23,10 +23,13 @@ bootstrap:
 
     pg_hba:
     - host replication replicator 127.0.0.1/32 md5
-    - host replication replicator pg01 md5
-    - host replication replicator pg02 md5
-    - host replication replicator pg03 md5
-    - host all all 0.0.0.0/0 md5
+    - host replication replicator {{ HOST_NAME_PG01 }} md5
+    - host replication replicator {{ HOST_NAME_PG02 }} md5
+    - host replication replicator {{ HOST_NAME_PG03 }} md5
+    - host replication replicator {{ HOST_NAME_PG01 }}.{{ FAKE_DOMAIN }} md5
+    - host replication replicator {{ HOST_NAME_PG02 }}.{{ FAKE_DOMAIN }} md5
+    - host replication replicator {{ HOST_NAME_PG03 }}.{{ FAKE_DOMAIN }} md5
+    - host all all {{ NET_POSTGRES_ALLOW }} md5
 
     users:
         admin:
@@ -44,10 +47,10 @@ postgresql:
     authentication:
         replication:
             username: replicator
-            password: gfhjkm
+            password: {{ PASS_POSTGRES_FOR_DB }}
         superuser:
             username: postgres
-            password: gfhjkm
+            password: {{ PASS_POSTGRES_FOR_DB }}
     parameters:
         unix_socket_directories: '.'
 

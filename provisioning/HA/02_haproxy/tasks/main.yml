@@ -4,7 +4,12 @@
     name: haproxy
     state: latest
 
-- name: copy haproxy.cfg
-  copy: src=haproxy.cfg dest=/etc/haproxy/haproxy.cfg owner=root group=root mode=0644
+- name: put haproxy.cfg template
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - haproxy restart

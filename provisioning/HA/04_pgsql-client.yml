@@ -1,0 +1,9 @@
+- name: 04_pgsql-client
+  hosts:
+    - web
+#    - hl-zabbix01
+#    - hl-zabbix02
+  become: true
+
+  roles:
+    - 04_pgsql-client

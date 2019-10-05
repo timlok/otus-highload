@@ -1,47 +1,48 @@
 # -*- mode: ruby -*-
 # vim: set ft=ruby :
+home = ENV['HOME']
 
 MACHINES = {
-  :haproxy => {
+  :HLpgHaproxy => {
     :box_name => "centos/7",
     :net => [
-               {ip: '192.168.11.100', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.59', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :etcd => {
+  :HLetcd => {
     :box_name => "centos/7",
     :net => [
-               {ip: '192.168.11.160', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.64', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :pg01 => {
+  :HLpg01 => {
     :box_name => "centos/7",
     :net => [
-               {ip: '192.168.11.151', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.65', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :pg02 => {
+  :HLpg02 => {
     :box_name => "centos/7",
     :net => [
-               {ip: '192.168.11.152', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.66', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :pg03 => {
+  :HLpg03 => {
     :box_name => "centos/7",
     :net => [
-               {ip: '192.168.11.153', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.67', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :zabbix01 => {
+  :HLzabbix01 => {
     :box_name => "centos/7",
     :net => [
-               {ip: '192.168.11.21', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.57', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :zabbix02 => {
+  :HLzabbix02 => {
     :box_name => "centos/7",
     :net => [
-               {ip: '192.168.11.22', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.58', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
 
@@ -49,30 +50,37 @@ MACHINES = {
 
 Vagrant.configure("2") do |config|
 
-  config.vm.define "haproxy" do |c|
+  config.vm.define "HLpgHaproxy" do |c|
+    c.vm.hostname = "hl-pg-haproxy"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2321, id: "ssh", host_ip: '127.0.0.1'
     c.vm.network "forwarded_port", adapter: 1, guest: 5000, host: 5000, host_ip: '127.0.0.1'
     c.vm.network "forwarded_port", adapter: 1, guest: 7000, host: 7000, host_ip: '127.0.0.1'
     #c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
-  config.vm.define "etcd" do |c|
+  config.vm.define "HLetcd" do |c|
+    c.vm.hostname = "hl-etcd"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2421, id: "ssh", host_ip: '127.0.0.1'
   end
-  config.vm.define "pg01" do |c|
+  config.vm.define "HLpg01" do |c|
+    c.vm.hostname = "hl-pg01"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2521, id: "ssh", host_ip: '127.0.0.1'
   end
-  config.vm.define "pg02" do |c|
+  config.vm.define "HLpg02" do |c|
+    c.vm.hostname = "hl-pg02"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2621, id: "ssh", host_ip: '127.0.0.1'
   end
-  config.vm.define "pg03" do |c|
+  config.vm.define "HLpg03" do |c|
+    c.vm.hostname = "hl-pg03"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2721, id: "ssh", host_ip: '127.0.0.1'
   end
-  config.vm.define "zabbix01" do |c|
-    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2821, id: "ssh", host_ip: '127.0.0.1'
+  config.vm.define "HLzabbix02" do |c|
+    c.vm.hostname = "hl-zabbix01"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2921, id: "ssh", host_ip: '127.0.0.1'
     c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
-  config.vm.define "zabbix02" do |c|
-    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2921, id: "ssh", host_ip: '127.0.0.1'
+  config.vm.define "HLzabbix01" do |c|
+    c.vm.hostname = "hl-zabbix01"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2821, id: "ssh", host_ip: '127.0.0.1'
     c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
 
@@ -82,7 +90,7 @@ Vagrant.configure("2") do |config|
 
         box.vm.box = boxconfig[:box_name]
         box.vm.box_check_update = false
-        box.vm.host_name = boxname.to_s
+        #box.vm.host_name = boxname.to_s
 
         #BUGGY!!!
         #box.vm.synced_folder "for_mysql_dump/", "/tmp/for_mysql_dump", type: "rsync"
@@ -114,27 +122,47 @@ Vagrant.configure("2") do |config|
 
         box.vm.provision "ansible" do |ansible|
           #ansible.verbose = "v"
-          ansible.playbook = "provisioning/01_tuning_OS.yml"
+          ansible.playbook = "provisioning/HA/01_tuning_OS.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/02_etcd-haproxy.yml"
+          ansible.playbook = "provisioning/HA/02_etcd-haproxy.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/03_pgsql-patroni.yml"
+          ansible.playbook = "provisioning/HA/03_pgsql-patroni-server.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/04_zabbix_pgsql.yml"
+          ansible.playbook = "provisioning/HA/04_pgsql-client.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
         end
         #box.vm.provision "ansible" do |ansible|
         #  ansible.verbose = "v"
-        #  ansible.playbook = "provisioning/05_create_database.yml"
+        #  ansible.playbook = "provisioning/HA/05_zabbix.yml"
+        #  ansible.inventory_path = "provisioning/HA/hosts"
+        #  ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+        #  ansible.extra_vars = "provisioning/HA/variables"
+        #  ansible.become = "true"
+        #end
+        #box.vm.provision "ansible" do |ansible|
+        #  ansible.verbose = "v"
+        #  ansible.playbook = "provisioning/HA/05_create_database.yml"
         #  ansible.become = "true"
         #end
 

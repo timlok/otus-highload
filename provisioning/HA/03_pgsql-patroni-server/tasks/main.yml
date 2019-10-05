@@ -40,10 +40,20 @@
     state: latest
 
 - name: put patroni.yml template
-  template: src=patroni.yml.j2 dest=/etc/patroni.yml owner=root group=root mode=0644
+  template:
+    src: patroni.yml.j2
+    dest: /etc/patroni.yml
+    owner: root
+    group: root
+    mode: 0644
 
 - name: copy patroni.service
-  copy: src=patroni.service dest=/etc/systemd/system/patroni.service owner=root group=root mode=0644
+  copy:
+    src: patroni.service
+    dest: /etc/systemd/system/patroni.service
+    owner: root
+    group: root
+    mode: 0644
 
 - name: force systemd to reread configs and patroni start
   systemd:

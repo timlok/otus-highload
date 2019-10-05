@@ -31,16 +31,23 @@
       - tcpdump
       - nmap
       - unzip
-      - bash-completion
 #      - iperf3
       - lbzip2
 #      - fuse-sshfs
+      - bash-completion
     state: latest
 
 - name: copy .screenrc
-  copy: src=screenrc dest=/root/.screenrc owner=root group=root mode=0600
+  copy:
+    src: screenrc
+    dest: /root/.screenrc
+    owner: root
+    group: root
+    mode: '0600'
+
 - name: edit bashrc, vimrc
-  shell: echo "alias vi='vim'" >> /root/.bashrc && echo "colorscheme desert" >> /etc/vimrc
+  shell:
+    echo "alias vi='vim'" >> /root/.bashrc && echo "colorscheme desert" >> /etc/vimrc
 
 - name: set timezone to Asia/Novosibirsk
 #- name: set timezone to Europe/Moscow
@@ -57,22 +64,27 @@
   blockinfile:
     path: /etc/hosts
     block: |
-      {{ item.ip }} {{ item.name }} {{ item.name }}.otus
+      {{ item.ip }} {{ item.name }} {{ item.name }}.{{ FAKE_DOMAIN }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   with_items:
-  - { name: hl-client, ip: 10.51.21.70 }
-  - { name: hl-haproxy01, ip: 10.51.21.50 }
-  - { name: hl-haproxy02, ip: 10.51.21.51 }
-  - { name: hl-mq01, ip: 10.51.21.52 }
-  - { name: hl-mq02, ip: 10.51.21.53 }
-  - { name: haproxy, ip: 192.168.11.100 }
-  - { name: pg01, ip: 192.168.11.151 }
-  - { name: pg02, ip: 192.168.11.152 }
-  - { name: pg03, ip: 192.168.11.153 }
-  - { name: etcd, ip: 192.168.11.160 }
-  - { name: zabbix01, ip: 192.168.11.21 }
-  - { name: zabbix02, ip: 192.168.11.22 }
-  - { name: zabbixvip, ip: 192.168.11.25 }
+  - { name: "{{ HOST_NAME_HL_CLIENT }}", ip: "{{ HOST_IP_HL_CLIENT }}" }
+  - { name: "{{ HOST_NAME_HA_VIP }}", ip: "{{ HOST_IP_HA_VIP }}" }
+  - { name: "{{ HOST_NAME_HA_01 }}", ip: "{{ HOST_IP_HA_01 }}" }
+  - { name: "{{ HOST_NAME_HA_02 }}", ip: "{{ HOST_IP_HA_02 }}" }
+  - { name: "{{ HOST_NAME_MQ_01 }}", ip: "{{ HOST_IP_MQ_01 }}" }
+  - { name: "{{ HOST_NAME_MQ_02 }}", ip: "{{ HOST_IP_MQ_02 }}" }
+  - { name: "{{ HOST_NAME_PG_HAPROXY }}", ip: "{{ HOST_IP_PG_HAPROXY }}" }
+  - { name: "{{ HOST_NAME_PG_CON_POOL_VIP }}", ip: "{{ HOST_IP_PG_CON_POOL_VIP }}" }
+  - { name: "{{ HOST_NAME_PG_CON_POOL_01 }}", ip: "{{ HOST_IP_PG_CON_POOL_01 }}" }
+  - { name: "{{ HOST_NAME_PG_CON_POOL_02 }}", ip: "{{ HOST_IP_PG_CON_POOL_02 }}" }
+  - { name: "{{ HOST_NAME_PG_CON_POOL_03 }}", ip: "{{ HOST_IP_PG_CON_POOL_03 }}" }
+  - { name: "{{ HOST_NAME_PG01 }}", ip: "{{ HOST_IP_PG01 }}" }
+  - { name: "{{ HOST_NAME_PG02 }}", ip: "{{ HOST_IP_PG02 }}" }
+  - { name: "{{ HOST_NAME_PG03 }}", ip: "{{ HOST_IP_PG03 }}" }
+  - { name: "{{ HOST_NAME_DCS }}", ip: "{{ HOST_IP_DCS }}" }
+  - { name: "{{ HOST_NAME_WEB_VIP }}", ip: "{{ HOST_IP_WEB_VIP }}" }
+  - { name: "{{ HOST_NAME_WEB01 }}", ip: "{{ HOST_IP_WEB01 }}" }
+  - { name: "{{ HOST_NAME_WEB02 }}", ip: "{{ HOST_IP_WEB02 }}" }
 
 - name: chronyd start and enable
   systemd:
@@ -92,3 +104,5 @@
     localectl set-locale LANG=ru_RU.UTF-8
   notify:
     - system restart
+#  when: host in groups['database']
+  when: "'hl-pg0' in ansible_hostname"
