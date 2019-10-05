@@ -1,0 +1,62 @@
+---
+####### ВНИМАНИЕ!!! Удаление БД и пользователя zabbix #######
+################# Если не нужно, отключить! #################
+- name: drop zabbix database
+  postgresql_db:
+    login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
+    login_user: postgres
+    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
+    port: "{{ PORT_FOR_DB_CLIENT }}"
+    name: zabbix
+    state: absent
+
+- name: remove zabbix user
+  postgresql_user:
+    login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
+    login_user: postgres
+    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
+    port: "{{ PORT_FOR_DB_CLIENT }}"
+    name: zabbix
+    state: absent
+#############################################################
+
+- name: create zabbix user
+  postgresql_user:
+    login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
+    login_user: postgres
+    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
+    port: "{{ PORT_FOR_DB_CLIENT }}"
+    #db: template1
+    name: zabbix
+    password: "{{ PASS_ZAB_FOR_DB }}"
+    encrypted: true
+    state: present
+
+- name: create zabbix database
+  postgresql_db:
+    login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
+    login_user: postgres
+    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
+    port: "{{ PORT_FOR_DB_CLIENT }}"
+    name: zabbix
+    owner: zabbix
+    #encoding: UTF-8
+    state: present
+
+#- name: find create.sql.gz file
+#  find:
+#    paths: /usr/share/doc
+#    patterns: "create.sql.gz"
+#    recurse: yes
+#  register: zabbix_sql_gz
+
+- name: restore zabbix database from create.sql.gz
+  postgresql_db:
+    login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
+    login_user: postgres
+    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
+    port: "{{ PORT_FOR_DB_CLIENT }}"
+    name: zabbix
+    state: restore
+#    target: "{{ zabbix_sql_gz }}"
+    target: /usr/share/doc/zabbix-server-pgsql-4.2.7/create.sql.gz

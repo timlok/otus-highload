@@ -1,9 +1,14 @@
-- name: 05_zabbix_install_and_create_DB
+- name: 05_zabbix_install
   hosts:
     - web
-#    - zabbix02
-#    - zabbix01
   become: true
-
   roles:
     - 05_zabbix_install
+
+- name: 05_zabbix_create_DB
+  hosts:
+    - hl-zabbix01
+    - HLzabbix01
+  become: true
+  roles:
+    - 05_zabbix_createDB
