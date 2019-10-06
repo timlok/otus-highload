@@ -34,7 +34,7 @@
       DBPort={{ PORT_FOR_DB_CLIENT }}
       DBPassword={{ PASS_ZAB_FOR_DB }}
 
-- name: put etcd.conf template
+- name: put zabbix.conf.php template
   template:
     src: zabbix.conf.php.j2
     dest: /etc/zabbix/web/zabbix.conf.php

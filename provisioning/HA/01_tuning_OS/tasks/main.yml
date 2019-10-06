@@ -49,11 +49,9 @@
   shell:
     echo "alias vi='vim'" >> /root/.bashrc && echo "colorscheme desert" >> /etc/vimrc
 
-- name: set timezone to Asia/Novosibirsk
-#- name: set timezone to Europe/Moscow
+- name: set timezone
   timezone:
-    name: Asia/Novosibirsk
-#    name: Europe/Moscow
+    name: "{{ TIMEZONE_OS }}"
 
 - name: put SELinux in permissive mode
   selinux:
@@ -98,7 +96,7 @@
     state: stopped
     enabled: no
 
-- name: set the russian locale
+- name: set the russian locale on database servers
   shell: |
     localedef  -i ru_RU -f UTF-8 ru_RU.UTF-8
     localectl set-locale LANG=ru_RU.UTF-8

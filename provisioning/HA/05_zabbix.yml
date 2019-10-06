@@ -4,6 +4,7 @@
   become: true
   roles:
     - 05_zabbix_install
+    - 05_zabbix_nginx-php-fpm
 
 - name: 05_zabbix_create_DB
   hosts:

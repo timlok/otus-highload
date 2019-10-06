@@ -1,0 +1,50 @@
+#http://server_ip:8080/zabbix
+
+server {
+    listen 8080;
+    #server_name {{ HOST_NAME_WEB_VIP }}.{{ FAKE_DOMAIN }};
+
+########## пример ##########
+#    server_name zabbix01.otus;
+#Если клиент может разрешить имя zabbix01.otus, то можно раскомментировать
+#server_name. Но, в этом случае, nginx будет отрабатывать этот конфиг только
+#при условии полного совпадния имени и порта в запросе от клиента
+#http://zabbix01.otus:8080/zabbix/
+############################
+
+#    listen 80;
+#    server_name {{ HOST_NAME_WEB_VIP }}.{{ FAKE_DOMAIN }};
+
+    root /usr/share;
+    set $root_path /usr/share;
+
+    access_log /var/log/nginx/zabbix.access.log;
+    error_log /var/log/nginx/zabbix.error.log;
+
+
+location / {
+    index index.php index.html index.htm;
+    }
+
+location ~ \.php$ {
+    fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+    fastcgi_param PHP_VALUE "
+max_execution_time = 300
+memory_limit = 128M
+post_max_size = 16M
+upload_max_filesize = 2M
+max_input_time = 300
+max_input_vars = 10000
+date.timezone = {{ TIMEZONE_OS }}
+always_populate_raw_post_data = -1
+";
+    fastcgi_buffers 8 256k;
+    fastcgi_buffer_size 128k;
+    fastcgi_intercept_errors on;
+    fastcgi_busy_buffers_size 256k;
+    fastcgi_temp_file_write_size 256k;
+    }
+}

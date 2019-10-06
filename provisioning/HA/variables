@@ -1,4 +1,7 @@
 ---
+TIMEZONE_OS: 'Asia/Novosibirsk'
+#TIMEZONE_OS: 'Europe/Moscow'
+
 #zabbix
 IP_ZAB_CLUSTER: '10.51.21.56'
 PASS_ZAB_FOR_DB: 'zabb_xPas5'
@@ -11,7 +14,7 @@ NET_POSTGRES_ALLOW: '10.51.21.0/24'
 #домен
 FAKE_DOMAIN: 'otus'
 
-#хосты
+########## хосты ##########
 HOST_NAME_HL_CLIENT: 'hl-client'
 HOST_IP_HL_CLIENT: '10.51.21.70'
 
@@ -41,12 +44,19 @@ HOST_IP_WEB01: '10.51.21.57'
 HOST_NAME_WEB02: 'hl-zabbix02'
 HOST_IP_WEB02: '10.51.21.58'
 
-#временный
+
+##### временно #############################################
 HOST_NAME_PG_HAPROXY: 'hl-pg-haproxy'
 HOST_IP_PG_HAPROXY: '10.51.21.59'
 
-HOST_NAME_PG_CON_POOL_VIP: 'hl-pg-conpool-vip'
-HOST_IP_PG_CON_POOL_VIP: '10.51.21.60'
+#только для работы в vagrant и при использовании haproxy в качестве точки входа в БД
+HOST_NAME_PG_CON_POOL_VIP: '{{ HOST_NAME_PG_HAPROXY }}'
+HOST_IP_PG_CON_POOL_VIP: '{{ HOST_IP_PG_HAPROXY }}'
+############################################################
+
+#раскомментировать при использовании серверов bgbouncer/consul и закомментировать аналогичные переменные выше
+#HOST_NAME_PG_CON_POOL_VIP: 'hl-pg-conpool-vip'
+#HOST_IP_PG_CON_POOL_VIP: '10.51.21.60'
 
 HOST_NAME_PG_CON_POOL_01: 'hl-pg-conpool01'
 HOST_IP_PG_CON_POOL_01: '10.51.21.61'

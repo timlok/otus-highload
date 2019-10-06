@@ -58,5 +58,5 @@
     port: "{{ PORT_FOR_DB_CLIENT }}"
     name: zabbix
     state: restore
-#    target: "{{ zabbix_sql_gz }}"
+    #target: "{{ zabbix_sql_gz }}"
     target: /usr/share/doc/zabbix-server-pgsql-4.2.7/create.sql.gz
