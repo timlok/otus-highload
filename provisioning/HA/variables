@@ -11,6 +11,9 @@ PORT_FOR_DB_CLIENT: '5000'
 PASS_POSTGRES_FOR_DB: 'gfhjkm'
 NET_POSTGRES_ALLOW: '10.51.21.0/24'
 
+#pacemaker
+PASS_HACLUSTER_USER: 'Ozae2doipi1Nahzi'
+
 #домен
 FAKE_DOMAIN: 'otus'
 

@@ -1,0 +1,15 @@
+- name: 06_pacemaker_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 06_pacemaker_install
+    #- 05_zabbix_nginx-php-fpm
+
+#- name: 06_pacemaker_create_cluster
+#  hosts:
+#    - hl-zabbix01
+#    - HLzabbix01
+#  become: true
+#  roles:
+#    - 06_pacemaker_create_cluster
