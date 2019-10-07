@@ -44,7 +44,7 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/)\
 текущая схема проекта
 ![scheme_current.png](scheme/scheme_current.png)
 
-целевая схема проекта
+целевая схема проекта, примерно, такая:
 ![scheme_target.png](scheme/scheme_target.png)
 
 ## Заметки
