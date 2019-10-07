@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2721, id: "ssh", host_ip: '127.0.0.1'
   end
   config.vm.define "HLzabbix02" do |c|
-    c.vm.hostname = "hl-zabbix01"
+    c.vm.hostname = "hl-zabbix02"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2921, id: "ssh", host_ip: '127.0.0.1'
     c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
@@ -160,11 +160,14 @@ Vagrant.configure("2") do |config|
           ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
         end
-        #box.vm.provision "ansible" do |ansible|
-        #  ansible.verbose = "v"
-        #  ansible.playbook = "provisioning/HA/05_create_database.yml"
-        #  ansible.become = "true"
-        #end
+        box.vm.provision "ansible" do |ansible|
+          ansible.verbose = "v"
+          ansible.playbook = "provisioning/HA/06_pacemaker.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
+          ansible.become = "true"
+        end
 
       end
   end

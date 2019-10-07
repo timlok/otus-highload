@@ -13,6 +13,7 @@ NET_POSTGRES_ALLOW: '10.51.21.0/24'
 
 #pacemaker
 PASS_HACLUSTER_USER: 'Ozae2doipi1Nahzi'
+IP_ZAB_CLUSTER_NIC: 'eth1'
 
 #домен
 FAKE_DOMAIN: 'otus'
