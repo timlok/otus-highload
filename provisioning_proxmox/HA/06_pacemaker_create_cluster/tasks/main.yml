@@ -25,11 +25,11 @@
     name: corosync
     state: started
     enabled: yes
-  delegate_to: HLzabbix02
+  delegate_to: hl-zabbix02
 
 - name: pacemaker enable
   systemd:
     name: pacemaker
     state: started
     enabled: yes
-  delegate_to: HLzabbix02
+  delegate_to: hl-zabbix02

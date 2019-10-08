@@ -36,7 +36,8 @@
 
 - name: install python-packages, patroni from pip
   pip:
-    name: virtualenv, python-etcd, patroni, psycopg2==2.7
+    name: virtualenv, python-etcd, patroni, psycopg2==2.7, urllib3
+    extra_args: --upgrade
     state: latest
 
 - name: put patroni.yml template
