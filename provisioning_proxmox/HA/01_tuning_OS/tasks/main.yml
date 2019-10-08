@@ -85,9 +85,9 @@
 #  - { name: "{{ HOST_NAME_WEB01 }}", ip: "{{ HOST_IP_WEB01 }}" }
 #  - { name: "{{ HOST_NAME_WEB02 }}", ip: "{{ HOST_IP_WEB02 }}" }
 
-- name: host name setting
-  hostname:
-    name: "{{ ansible_hostname }}"
+#- name: host name setting
+#  hostname:
+#    name: "{{ ansible_hostname }}"
 
 - name: chronyd start and enable
   systemd:

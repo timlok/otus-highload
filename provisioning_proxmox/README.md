@@ -5,7 +5,7 @@
 Клонируем репозиторий:
 
 ```bash
-git clone https://github.com/timlok/otus-highload.git
+[otus@hl-client ~]$ git clone https://github.com/timlok/otus-highload.git
 ```
 
 Получаем список тасок:

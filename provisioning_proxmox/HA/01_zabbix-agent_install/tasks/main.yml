@@ -16,7 +16,7 @@
       - zabbix-get
     state: latest
 
-- name: put zabbix_agentd.conf template
+- name: put zabbix_agentd.conf template for servers
   template:
     src: server_zabbix_agentd.conf.j2
     dest: /etc/zabbix/zabbix_agentd.conf
@@ -27,7 +27,7 @@
     - zabbix-agent restart
   when: "'hl-zabbix0' in ansible_hostname"
 
-- name: put zabbix_agentd.conf template
+- name: put zabbix_agentd.conf template for clients
   template:
     src: client_zabbix_agentd.conf.j2
     dest: /etc/zabbix/zabbix_agentd.conf
