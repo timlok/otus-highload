@@ -2,7 +2,14 @@
 
 Плейбуки адаптированные для запуска на частично преднастроенных реальных или виртуальных серверах.
 
-Запускать так:
+Клонируем репозиторий:
+
 ```bash
-ansible-playbook ansible_ssh_extra_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' /home/otus/provisioning_proxmox/HA/all.yml -i /home/otus/provisioning_proxmox/HA/hosts --extra-vars @/home/otus/provisioning_proxmox/HA/variables --list-tasks
+git clone https://github.com/timlok/otus-highload.git
+```
+
+Запускаем:
+
+```bash
+ansible-playbook --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' /home/otus/otus-highload/provisioning_proxmox/HA/00_all.yml -i /home/otus/otus-highload/provisioning_proxmox/HA/hosts --extra-vars @/home/otus/otus-highload/provisioning_proxmox/HA/variables --list-tasks
 ```
