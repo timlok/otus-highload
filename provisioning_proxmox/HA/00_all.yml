@@ -1,0 +1,71 @@
+- name: 01_tuning_OS
+  hosts: all
+  become: true
+
+  roles:
+   - 01_tuning_OS
+   - 01_zabbix-agent_install
+
+- name: 02_etcd
+  hosts:
+    - hl-etcd
+  become: true
+  roles:
+    - 02_etcd
+
+- name: 02_haproxy
+  hosts:
+    - hl-pg-haproxy
+  become: true
+  roles:
+    - 02_haproxy
+
+- name: 03_pgsql-patroni-server
+  hosts:
+    - database
+#    - hl-pg01
+#    - hl-pg02
+#    - hl-pg03
+  become: true
+
+  roles:
+    - 03_pgsql-patroni-server
+
+- name: 04_pgsql-client
+  hosts:
+    - web
+#    - hl-zabbix01
+#    - hl-zabbix02
+  become: true
+
+  roles:
+    - 04_pgsql-client
+
+- name: 05_zabbix_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 05_zabbix_install
+    - 05_zabbix_nginx-php-fpm
+
+- name: 05_zabbix_create_DB
+  hosts:
+    - hl-zabbix01
+  become: true
+  roles:
+    - 05_zabbix_createDB
+
+- name: 06_pacemaker_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 06_pacemaker_install
+
+- name: 06_pacemaker_create_cluster
+  hosts:
+    - hl-zabbix01
+  become: true
+  roles:
+    - 06_pacemaker_create_cluster

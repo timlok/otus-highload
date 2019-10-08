@@ -1,0 +1,12 @@
+---
+- name: disable php-fpm
+  systemd:
+    name: php-fpm
+    state: stopped
+    enabled: no
+
+- name: disable nginx
+  systemd:
+    name: nginx
+    state: stopped
+    enabled: no

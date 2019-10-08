@@ -1,0 +1,7 @@
+- name: 01_tuning_OS
+  hosts: all
+  become: true
+
+  roles:
+   - 01_tuning_OS
+   - 01_zabbix-agent_install

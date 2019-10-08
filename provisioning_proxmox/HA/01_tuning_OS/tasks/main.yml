@@ -1,0 +1,111 @@
+---
+#- name: install epel
+#  yum:
+#    name:
+#    - epel-release
+
+- name: install packages
+  yum:
+    name:
+      - chrony
+#      - libselinux-python
+#      - vim
+#      - vim-enhanced
+#      - mc
+#      - screen
+#      - ccze
+##      - lnav
+#      - redhat-lsb-core
+#      - wget
+#      - yum-utils
+#      - htop
+#      - sudo
+#      - iftop
+#      - net-tools
+#      - elinks
+#      - lynx
+#      - bind-utils
+#      - deltarpm
+#      - lsof
+#      - tree
+#      - traceroute
+#      - tcpdump
+#      - nmap
+#      - unzip
+##      - iperf3
+#      - lbzip2
+##      - fuse-sshfs
+#      - bash-completion
+    state: latest
+
+- name: copy .screenrc
+  copy:
+    src: screenrc
+    dest: /root/.screenrc
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: edit bashrc, vimrc
+  shell:
+    echo "alias vi='vim'" >> /root/.bashrc && echo "colorscheme desert" >> /etc/vimrc
+
+- name: set timezone
+  timezone:
+    name: "{{ TIMEZONE_OS }}"
+
+- name: put SELinux in permissive mode
+  selinux:
+    policy: targeted
+    state: permissive
+
+#- name: add mappings to /etc/hosts
+#  blockinfile:
+#    path: /etc/hosts
+#    block: |
+#      {{ item.ip }} {{ item.name }}.{{ FAKE_DOMAIN }} {{ item.name }}
+#    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+#  with_items:
+#  - { name: "{{ HOST_NAME_HL_CLIENT }}", ip: "{{ HOST_IP_HL_CLIENT }}" }
+#  - { name: "{{ HOST_NAME_HA_VIP }}", ip: "{{ HOST_IP_HA_VIP }}" }
+#  - { name: "{{ HOST_NAME_HA_01 }}", ip: "{{ HOST_IP_HA_01 }}" }
+#  - { name: "{{ HOST_NAME_HA_02 }}", ip: "{{ HOST_IP_HA_02 }}" }
+#  - { name: "{{ HOST_NAME_MQ_01 }}", ip: "{{ HOST_IP_MQ_01 }}" }
+#  - { name: "{{ HOST_NAME_MQ_02 }}", ip: "{{ HOST_IP_MQ_02 }}" }
+#  - { name: "{{ HOST_NAME_PG_HAPROXY }}", ip: "{{ HOST_IP_PG_HAPROXY }}" }
+#  - { name: "{{ HOST_NAME_PG_CON_POOL_VIP }}", ip: "{{ HOST_IP_PG_CON_POOL_VIP }}" }
+#  - { name: "{{ HOST_NAME_PG_CON_POOL_01 }}", ip: "{{ HOST_IP_PG_CON_POOL_01 }}" }
+#  - { name: "{{ HOST_NAME_PG_CON_POOL_02 }}", ip: "{{ HOST_IP_PG_CON_POOL_02 }}" }
+#  - { name: "{{ HOST_NAME_PG_CON_POOL_03 }}", ip: "{{ HOST_IP_PG_CON_POOL_03 }}" }
+#  - { name: "{{ HOST_NAME_PG01 }}", ip: "{{ HOST_IP_PG01 }}" }
+#  - { name: "{{ HOST_NAME_PG02 }}", ip: "{{ HOST_IP_PG02 }}" }
+#  - { name: "{{ HOST_NAME_PG03 }}", ip: "{{ HOST_IP_PG03 }}" }
+#  - { name: "{{ HOST_NAME_DCS }}", ip: "{{ HOST_IP_DCS }}" }
+#  - { name: "{{ HOST_NAME_WEB_VIP }}", ip: "{{ HOST_IP_WEB_VIP }}" }
+#  - { name: "{{ HOST_NAME_WEB01 }}", ip: "{{ HOST_IP_WEB01 }}" }
+#  - { name: "{{ HOST_NAME_WEB02 }}", ip: "{{ HOST_IP_WEB02 }}" }
+
+- name: host name setting
+  hostname:
+    name: "{{ ansible_hostname }}"
+
+- name: chronyd start and enable
+  systemd:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: firewalld disable
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: set the russian locale on database servers
+  shell: |
+    localedef  -i ru_RU -f UTF-8 ru_RU.UTF-8
+    localectl set-locale LANG=ru_RU.UTF-8
+  notify:
+    - system restart
+#  when: host in groups['database']
+  when: "'hl-pg0' in ansible_hostname"

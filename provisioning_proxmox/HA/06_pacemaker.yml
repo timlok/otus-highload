@@ -1,0 +1,13 @@
+- name: 06_pacemaker_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 06_pacemaker_install
+
+- name: 06_pacemaker_create_cluster
+  hosts:
+    - hl-zabbix01
+  become: true
+  roles:
+    - 06_pacemaker_create_cluster
