@@ -14,7 +14,7 @@
     name:
       - zabbix-server-pgsql
       - zabbix-web-pgsql
-      - zabbix-agent
+      #- zabbix-agent
       - zabbix-get
     state: latest
 
