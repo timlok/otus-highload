@@ -1,0 +1,5 @@
+<Monitoring>
+  <Host address="hl-zabbix01.otus" interval="1" username="root">
+    <CPU/> <Kernel/> <Net/> <System/> <Memory/> <Disk/> <Netstat /> <Nstat/>
+  </Host>
+</Monitoring>

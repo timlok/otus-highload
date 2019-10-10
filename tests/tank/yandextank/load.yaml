@@ -1,0 +1,26 @@
+phantom:
+  address: 10.51.21.56:8080
+  uris:
+    - "/zabbix/screens.php?elementid=23"
+    - "/zabbix/zabbix.php?action=dashboard.view&dashboardid=1"
+  ssl: false
+  load_profile:
+    load_type: rps
+    schedule: line(1, 60, 200s)
+  #ammofile: /var/loadtest/ammo_local.txt
+  #ammo_type: uripost
+console:
+  enabled: true
+telegraf:
+  enabled: false
+  #config: hl-zabbix02.xml
+  #enabled: true
+  #kill_old: true
+  #ssh_timeout: 15s
+  #package: yandextank.plugins.Telegraf
+uploader:
+#  enabled: false
+  enabled: true
+  package: yandextank.plugins.DataUploader
+  token_file: token.txt
+  operator: timlok
