@@ -3,6 +3,7 @@
 На хостовой машине должен быть установлен и запущен docker. Необязательно, но удобнее, чтобы все файлы лежали рядом.
 
 Запуск
+
 ```bash
 docker run -v $(pwd):/var/loadtest -v $HOME/.ssh:/home/otus/.ssh -it direvius/yandex-tank
 ```
@@ -23,65 +24,45 @@ docker run --entrypoint /bin/bash -v $(pwd):/var/loadtest -v $HOME/.ssh:/home/ot
 
 Оптимизация TCP/IP-стека для nginx+php-fpm:
 
-```
-net.core.rmem_max = 16777216 
-net.ipv4.tcp_rmem = 4096 87380 16777216 
-net.core.wmem_max = 16777216 
-net.ipv4.tcp_wmem = 4096 16384 16777216 
-net.ipv4.tcp_fin_timeout = 20 
-net.ipv4.tcp_tw_reuse = 1 
-net.core.netdev_max_backlog = 10000 
+```bash
+net.core.rmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_wmem = 4096 16384 16777216
+net.ipv4.tcp_fin_timeout = 20
+net.ipv4.tcp_tw_reuse = 1
+net.core.netdev_max_backlog = 10000
 net.ipv4.ip_local_port_range = 15000 65000
 ```
 
 ## Результаты тестов
 
-тестирование без оптимизации
-https://overload.yandex.net/218467
+- тестирование без оптимизации
+  [https://overload.yandex.net/218467](https://overload.yandex.net/218467)
 
-установлен php-pecl-apcu
-https://overload.yandex.net/218533
+- установлен php-pecl-apcu
+  [https://overload.yandex.net/218533](https://overload.yandex.net/218533)
 
-установлены
-php-pecl-apcu
-php-pecl-zendopcache
-https://overload.yandex.net/218545
+- установлены php-pecl-apcu, php-pecl-zendopcache
+  [https://overload.yandex.net/218545](https://overload.yandex.net/218545)
 
-установлены
-php-pecl-apcu
-php-pecl-zendopcache
-php-pecl-memcache, memcached
-https://overload.yandex.net/218555
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached
+  [https://overload.yandex.net/218555](https://overload.yandex.net/218555)
 
-установлены
-php-pecl-apcu
-php-pecl-zendopcache
-php-pecl-memcache, memcached
-php-pecl-redis, redis
-https://overload.yandex.net/218558
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
+  [https://overload.yandex.net/218558](https://overload.yandex.net/218558)
 
-установлены
-php-pecl-apcu
-php-pecl-zendopcache
-php-pecl-redis, redis
-https://overload.yandex.net/218564
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-redis, redis
+  [https://overload.yandex.net/218564](https://overload.yandex.net/218564)
 
-установлены
-php-pecl-apcu
-php-pecl-zendopcache
-php-pecl-memcache, memcached
-php-pecl-redis, redis
-оптимизация php-fpm
-https://overload.yandex.net/218658
+- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
+  оптимизация php-fpm
+  [https://overload.yandex.net/218658](https://overload.yandex.net/218658)
 
-установлены
-php-pecl-apcu
-php-pecl-zendopcache
-php-pecl-memcache, memcached
-php-pecl-redis, redis
-оптимизация php-fpm
-оптимизация sysctl.conf
-https://overload.yandex.net/218662
+- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
+  оптимизация php-fpm
+  оптимизация sysctl.conf
+  [https://overload.yandex.net/218662](https://overload.yandex.net/218662)
 
 Сводный график нагрузки на сервера во время выполнения последнего теста:
 
@@ -89,20 +70,16 @@ https://overload.yandex.net/218662
 
 Провёл повторный тест с последней конфигурацией
 
-установлены
-php-pecl-apcu
-php-pecl-zendopcache
-php-pecl-memcache, memcached
-php-pecl-redis, redis
+установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
 оптимизация php-fpm
 оптимизация sysctl.conf
-https://overload.yandex.net/219036
+[https://overload.yandex.net/219036](https://overload.yandex.net/219036)
 
  и обнаружил:
 
- - Потребление ОЗУ увеличилось только на 24,95 МБ, что говорит о том, что php-fpm дополнительно запустил ещё chlidren`ов.
- - Php-fpm уже не говорит, о том, что ему плохо.
- - Из-за высокой нагрузки на сеть и ЦП, pacemaker не может проверить статус клонированного ресурса (для работы в active/active) cluster_vip. Поскольку от этого ресурса зависят все остальные ресурсы, то pacemaker перезапускает cluster_vip и все свои остальные ресурсы и именно поэтому происходят потери http-запросов при тестировании. При этом, с точки зрения потери http-трафика, не очень важно, на какой ноде pacemaker восстановит ресурсы, т.к. потери http-трафика будут в любом случае.
+- Потребление ОЗУ увеличилось только на 24,95 МБ, что говорит о том, что php-fpm дополнительно запустил ещё chlidren`ов.
+- Php-fpm уже не говорит, о том, что ему плохо.
+- Из-за высокой нагрузки на сеть и ЦП, pacemaker не может проверить статус клонированного ресурса (для работы в active/active) cluster_vip. Поскольку от этого ресурса зависят все остальные ресурсы, то pacemaker перезапускает cluster_vip и все свои остальные ресурсы и именно поэтому происходят потери http-запросов при тестировании. При этом, с точки зрения потери http-трафика, не очень важно, на какой ноде pacemaker восстановит ресурсы, т.к. потери http-трафика будут в любом случае.
    Привожу лог с выявлением этого поведения:
 
 ```bash
@@ -171,4 +148,4 @@ https://overload.yandex.net/219036
 
 Вывод:
 Не считаю правильным перенастраивать pacemaker на увеличение таймаута недоступности ресурса cluster_vip, т.к. станет не оптимальным выполнение задачи отказоустойчивости при проблемах сетевой связанности, отказах сервисов или ВМ.
-Для решения этой проблемы считаю необходимым увеличение мощности или количества ядер ЦП.
+Для решения этой проблемы считаю необходимым увеличение мощности или количества ядер ЦП на web-серверах (запуск аналогичного теста на двухъядерных web-серверах не выявил проблем), оптимизацию серверов БД для уменьшения iowait, замену haproxy на pgbouncer.
