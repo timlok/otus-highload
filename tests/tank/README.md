@@ -55,11 +55,11 @@ net.ipv4.ip_local_port_range = 15000 65000
 - установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-redis, redis\
   [https://overload.yandex.net/218564](https://overload.yandex.net/218564)
 
-- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
   оптимизация php-fpm\
   [https://overload.yandex.net/218658](https://overload.yandex.net/218658)
 
-- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
   оптимизация php-fpm\
   оптимизация параметров ядра через sysctl.conf\
   [https://overload.yandex.net/218662](https://overload.yandex.net/218662)
