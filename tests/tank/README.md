@@ -1,6 +1,6 @@
 # яндекс.танк
 
-На хостовой машине должен быть установлен и запущен docker. Необязательно, но удобнее, чтобы все файлы лежали рядом.
+На хостовой машине с которой запускаем тест должен быть установлен и запущен docker. Необязательно, но удобнее, чтобы все файлы лежали рядом.
 
 Запуск
 
@@ -22,7 +22,7 @@ docker run --entrypoint /bin/bash -v $(pwd):/var/loadtest -v $HOME/.ssh:/home/ot
 
 Была проведена оптимизация php с помощью подключения модулей кеширования: php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache + memcached, php-pecl-redis + redis.
 
-Оптимизация TCP/IP-стека для nginx+php-fpm:
+Оптимизация TCP/IP-стека для nginx+php-fpm через sysctl.conf:
 
 ```bash
 net.core.rmem_max = 16777216
@@ -37,31 +37,31 @@ net.ipv4.ip_local_port_range = 15000 65000
 
 ## Результаты тестов
 
-- тестирование без оптимизации
+- тестирование без оптимизации\
   [https://overload.yandex.net/218467](https://overload.yandex.net/218467)
 
-- установлен php-pecl-apcu
+- установлен php-pecl-apcu\
   [https://overload.yandex.net/218533](https://overload.yandex.net/218533)
 
-- установлены php-pecl-apcu, php-pecl-zendopcache
+- установлены php-pecl-apcu, php-pecl-zendopcache\
   [https://overload.yandex.net/218545](https://overload.yandex.net/218545)
 
-- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached\
   [https://overload.yandex.net/218555](https://overload.yandex.net/218555)
 
-- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
   [https://overload.yandex.net/218558](https://overload.yandex.net/218558)
 
-- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-redis, redis
+- установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-redis, redis\
   [https://overload.yandex.net/218564](https://overload.yandex.net/218564)
 
-- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
-  оптимизация php-fpm
+- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
+  оптимизация php-fpm\
   [https://overload.yandex.net/218658](https://overload.yandex.net/218658)
 
-- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
-  оптимизация php-fpm
-  оптимизация sysctl.conf
+- установлены, php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
+  оптимизация php-fpm\
+  оптимизация параметров ядра через sysctl.conf\
   [https://overload.yandex.net/218662](https://overload.yandex.net/218662)
 
 Сводный график нагрузки на сервера во время выполнения последнего теста:
@@ -70,9 +70,9 @@ net.ipv4.ip_local_port_range = 15000 65000
 
 Провёл повторный тест с последней конфигурацией
 
-установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis
-оптимизация php-fpm
-оптимизация sysctl.conf
+установлены php-pecl-apcu, php-pecl-zendopcache, php-pecl-memcache, memcached, php-pecl-redis, redis\
+оптимизация php-fpm\
+оптимизация параметров ядра через sysctl.conf\
 [https://overload.yandex.net/219036](https://overload.yandex.net/219036)
 
  и обнаружил:
@@ -147,5 +147,6 @@ net.ipv4.ip_local_port_range = 15000 65000
 ```
 
 Вывод:
-Не считаю правильным перенастраивать pacemaker на увеличение таймаута недоступности ресурса cluster_vip, т.к. станет не оптимальным выполнение задачи отказоустойчивости при проблемах сетевой связанности, отказах сервисов или ВМ.
-Для решения этой проблемы считаю необходимым увеличение мощности или количества ядер ЦП на web-серверах (запуск аналогичного теста на двухъядерных web-серверах не выявил проблем), оптимизацию серверов БД для уменьшения iowait, замену haproxy на pgbouncer.
+
+- Не считаю правильным перенастраивать pacemaker на увеличение таймаута недоступности ресурса cluster_vip, т.к. станет не оптимальным выполнение задачи отказоустойчивости при проблемах сетевой связанности, отказах сервисов или ВМ.
+- Для решения этой проблемы считаю необходимым увеличение мощности или количества ядер ЦП на web-серверах (запуск аналогичного теста на двухъядерных web-серверах не выявил проблем), оптимизацию серверов БД для уменьшения iowait, замену haproxy на pgbouncer.
