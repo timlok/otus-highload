@@ -7,6 +7,7 @@
 - name: install packages
   yum:
     name:
+      - chrony
       - libselinux-python
       - vim
       - vim-enhanced
@@ -62,7 +63,7 @@
   blockinfile:
     path: /etc/hosts
     block: |
-      {{ item.ip }} {{ item.name }} {{ item.name }}.{{ FAKE_DOMAIN }}
+      {{ item.ip }} {{ item.name }}.{{ FAKE_DOMAIN }} {{ item.name }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   with_items:
   - { name: "{{ HOST_NAME_HL_CLIENT }}", ip: "{{ HOST_IP_HL_CLIENT }}" }

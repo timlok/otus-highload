@@ -32,7 +32,7 @@ net.ipv4.tcp_wmem = 4096 16384 16777216
 net.ipv4.tcp_fin_timeout = 20
 net.ipv4.tcp_tw_reuse = 1
 net.core.netdev_max_backlog = 10000
-net.ipv4.ip_local_port_range = 15000 65000
+net.ipv4.ip_local_port_range = 15000 65001
 ```
 
 ## Результаты тестов

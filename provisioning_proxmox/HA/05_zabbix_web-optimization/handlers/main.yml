@@ -1,0 +1,12 @@
+---
+- name: memcached restart
+  systemd:
+    name: memcached
+    state: restarted
+    enabled: yes
+
+- name: redis restart
+  systemd:
+    name: redis
+    state: restarted
+    enabled: yes

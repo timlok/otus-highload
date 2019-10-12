@@ -2,6 +2,9 @@
 TIMEZONE_OS: 'Asia/Novosibirsk'
 #TIMEZONE_OS: 'Europe/Moscow'
 
+#HOSTS_FILE: '/etc/hosts'
+#HOSTS_FILE: '/etc/cloud/templates/hosts.redhat.tmpl'
+
 #zabbix
 IP_ZAB_CLUSTER: '10.51.21.56'
 PASS_ZAB_FOR_DB: 'zabb_xPas5'
