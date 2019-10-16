@@ -1,0 +1,151 @@
+### required section
+[postgres]
+enabled = True
+host = {{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}
+user = postgres
+password = {{ PASS_POSTGRES_FOR_DB }}
+database = postgres
+port = {{ PORT_FOR_DB_CLIENT }}
+query_timeout = 10
+application_name = mamonsu
+
+### required section
+[zabbix]
+enabled = True
+; zabbix server address
+address = {{ HOST_NAME_WEB_VIP }}.{{ FAKE_DOMAIN }}
+; configured 'Host name' of client in zabbix
+client = hl-pgMASTER
+port = 10051
+
+[sender]
+queue = 2048
+
+### required section
+[system]
+enabled = False
+;enabled = True
+
+### required section
+[log]
+file = /var/log/mamonsu/agent.log
+level = INFO
+format = [%(levelname)s] %(asctime)s - %(name)s	-	%(message)s
+
+[agent]
+enabled = True
+host = 127.0.0.1
+;host = hl-zabbix-vip
+port = 10050
+
+[plugins]
+;enabled = False
+enabled = True
+directory = /etc/mamonsu/plugins
+
+;[biggest_tables]
+;enabled = True
+
+[metric_log]
+enabled = False
+directory = /var/log/mamonsu
+max_size_mb = 1024
+
+### individual plugin sections
+[health]
+max_memory_usage = 41943040
+interval = 60
+
+[bgwriter]
+interval = 60
+
+[connections]
+percent_connections_tr = 90
+interval = 60
+
+[databases]
+bloat_scale = 0.2
+min_rows = 50
+interval = 300
+
+[pghealth]
+uptime = 600
+cache = 80
+interval = 60
+
+[instance]
+interval = 60
+
+[xlog]
+enabled = False
+lag_more_then_in_sec = 300
+interval = 60
+
+[pgstatstatement]
+interval = 60
+
+[pgbuffercache]
+interval = 60
+
+[pgwaitsampling]
+enabled = False
+interval = 60
+
+[checkpoint]
+max_checkpoint_by_wal_in_hour = 12
+interval = 300
+
+[oldest]
+max_transaction_time = 18000
+max_xid_age = 18000000
+interval = 60
+
+[pglocks]
+interval = 60
+
+[cfs]
+enabled = False
+force_enable = False
+interval = 60
+
+[archivecommand]
+enabled = False
+max_count_files = 2
+interval = 60
+
+[procstat]
+interval = 60
+
+[diskstats]
+interval = 60
+
+[disksizes]
+vfs_percent_free = 10
+vfs_inode_percent_free = 10
+interval = 60
+
+[memory]
+interval = 60
+
+[systemuptime]
+up_time = 300
+interval = 60
+
+[openfiles]
+interval = 60
+
+[net]
+interval = 60
+
+[la]
+interval = 60
+
+[zbxsender]
+interval = 10
+
+[logsender]
+interval = 2
+
+[agentapi]
+interval = 60
+

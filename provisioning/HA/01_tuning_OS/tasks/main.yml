@@ -61,29 +61,33 @@
 
 - name: add mappings to /etc/hosts
   blockinfile:
-    path: /etc/hosts
+    #path: /etc/hosts
+    path: "{{ HOSTS_FILE }}"
     block: |
       {{ item.ip }} {{ item.name }}.{{ FAKE_DOMAIN }} {{ item.name }}
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   with_items:
-  - { name: "{{ HOST_NAME_HL_CLIENT }}", ip: "{{ HOST_IP_HL_CLIENT }}" }
-  - { name: "{{ HOST_NAME_HA_VIP }}", ip: "{{ HOST_IP_HA_VIP }}" }
-  - { name: "{{ HOST_NAME_HA_01 }}", ip: "{{ HOST_IP_HA_01 }}" }
-  - { name: "{{ HOST_NAME_HA_02 }}", ip: "{{ HOST_IP_HA_02 }}" }
-  - { name: "{{ HOST_NAME_MQ_01 }}", ip: "{{ HOST_IP_MQ_01 }}" }
-  - { name: "{{ HOST_NAME_MQ_02 }}", ip: "{{ HOST_IP_MQ_02 }}" }
-  - { name: "{{ HOST_NAME_PG_HAPROXY }}", ip: "{{ HOST_IP_PG_HAPROXY }}" }
-  - { name: "{{ HOST_NAME_PG_CON_POOL_VIP }}", ip: "{{ HOST_IP_PG_CON_POOL_VIP }}" }
-  - { name: "{{ HOST_NAME_PG_CON_POOL_01 }}", ip: "{{ HOST_IP_PG_CON_POOL_01 }}" }
-  - { name: "{{ HOST_NAME_PG_CON_POOL_02 }}", ip: "{{ HOST_IP_PG_CON_POOL_02 }}" }
-  - { name: "{{ HOST_NAME_PG_CON_POOL_03 }}", ip: "{{ HOST_IP_PG_CON_POOL_03 }}" }
-  - { name: "{{ HOST_NAME_PG01 }}", ip: "{{ HOST_IP_PG01 }}" }
-  - { name: "{{ HOST_NAME_PG02 }}", ip: "{{ HOST_IP_PG02 }}" }
-  - { name: "{{ HOST_NAME_PG03 }}", ip: "{{ HOST_IP_PG03 }}" }
-  - { name: "{{ HOST_NAME_DCS }}", ip: "{{ HOST_IP_DCS }}" }
-  - { name: "{{ HOST_NAME_WEB_VIP }}", ip: "{{ HOST_IP_WEB_VIP }}" }
-  - { name: "{{ HOST_NAME_WEB01 }}", ip: "{{ HOST_IP_WEB01 }}" }
-  - { name: "{{ HOST_NAME_WEB02 }}", ip: "{{ HOST_IP_WEB02 }}" }
+    #- { name: "{{ HOST_NAME_HA_VIP }}", ip: "{{ HOST_IP_HA_VIP }}" }
+    #- { name: "{{ HOST_NAME_HA_01 }}", ip: "{{ HOST_IP_HA_01 }}" }
+    #- { name: "{{ HOST_NAME_HA_02 }}", ip: "{{ HOST_IP_HA_02 }}" }
+    #- { name: "{{ HOST_NAME_MQ_01 }}", ip: "{{ HOST_IP_MQ_01 }}" }
+    #- { name: "{{ HOST_NAME_MQ_02 }}", ip: "{{ HOST_IP_MQ_02 }}" }
+    - { name: "{{ HOST_NAME_BALANCER_VIP }}", ip: "{{ HOST_IP_BALANCER_VIP }} "}
+    - { name: "{{ HOST_NAME_BALANCER_01 }}", ip: "{{ HOST_IP_BALANCER_01 }} "}
+    - { name: "{{ HOST_NAME_BALANCER_02 }}", ip: "{{ HOST_IP_BALANCER_02 }} "}
+    - { name: "{{ HOST_NAME_PG_HAPROXY }}", ip: "{{ HOST_IP_PG_HAPROXY }}" }
+    - { name: "{{ HOST_NAME_PG_CON_POOL_VIP }}", ip: "{{ HOST_IP_PG_CON_POOL_VIP }}" }
+    - { name: "{{ HOST_NAME_PG_CON_POOL_01 }}", ip: "{{ HOST_IP_PG_CON_POOL_01 }}" }
+    - { name: "{{ HOST_NAME_PG_CON_POOL_02 }}", ip: "{{ HOST_IP_PG_CON_POOL_02 }}" }
+    - { name: "{{ HOST_NAME_PG_CON_POOL_03 }}", ip: "{{ HOST_IP_PG_CON_POOL_03 }}" }
+    - { name: "{{ HOST_NAME_PG01 }}", ip: "{{ HOST_IP_PG01 }}" }
+    - { name: "{{ HOST_NAME_PG02 }}", ip: "{{ HOST_IP_PG02 }}" }
+    - { name: "{{ HOST_NAME_PG03 }}", ip: "{{ HOST_IP_PG03 }}" }
+    - { name: "{{ HOST_NAME_DCS }}", ip: "{{ HOST_IP_DCS }}" }
+    - { name: "{{ HOST_NAME_WEB_VIP }}", ip: "{{ HOST_IP_WEB_VIP }}" }
+    - { name: "{{ HOST_NAME_WEB01 }}", ip: "{{ HOST_IP_WEB01 }}" }
+    - { name: "{{ HOST_NAME_WEB02 }}", ip: "{{ HOST_IP_WEB02 }}" }
+    - { name: "{{ HOST_NAME_HL_CLIENT }}", ip: "{{ HOST_IP_HL_CLIENT }}" }
 
 - name: chronyd start and enable
   systemd:
@@ -99,7 +103,7 @@
 
 - name: set the russian locale on database servers
   shell: |
-    localedef  -i ru_RU -f UTF-8 ru_RU.UTF-8
+    localedef -i ru_RU -f UTF-8 ru_RU.UTF-8
     localectl set-locale LANG=ru_RU.UTF-8
   notify:
     - system restart

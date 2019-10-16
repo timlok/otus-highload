@@ -3,6 +3,18 @@
 home = ENV['HOME']
 
 MACHINES = {
+  :HLbalancer01 => {
+    :box_name => "centos/7",
+    :net => [
+               {ip: '10.51.21.51', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+            ]
+  },
+  :HLbalancer02 => {
+    :box_name => "centos/7",
+    :net => [
+               {ip: '10.51.21.52', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+            ]
+  },
   :HLpgHaproxy => {
     :box_name => "centos/7",
     :net => [
@@ -45,11 +57,31 @@ MACHINES = {
                {ip: '10.51.21.58', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-
+  :HLclient => {
+    :box_name => "centos/7",
+    :net => [
+               {ip: '10.51.21.70', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+            ]
+  },
 }
 
 Vagrant.configure("2") do |config|
 
+  config.vm.define "HLclient" do |c|
+    c.vm.hostname = "hl-client"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2232, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+  end
+  config.vm.define "HLbalancer01" do |c|
+    c.vm.hostname = "hl-balancer01"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2231, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+  end
+  config.vm.define "HLbalancer02" do |c|
+    c.vm.hostname = "hl-balancer02"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2241, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+  end
   config.vm.define "HLpgHaproxy" do |c|
     c.vm.hostname = "hl-pg-haproxy"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2321, id: "ssh", host_ip: '127.0.0.1'
@@ -130,7 +162,7 @@ Vagrant.configure("2") do |config|
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/02_etcd-haproxy.yml"
+          ansible.playbook = "provisioning/HA/02_hl-client_docker-yandextank.yml"
           ansible.inventory_path = "provisioning/HA/hosts"
           ansible.inventory_path = "provisioning/HA/hosts_vagrant"
           ansible.extra_vars = "provisioning/HA/variables"
@@ -138,7 +170,7 @@ Vagrant.configure("2") do |config|
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/03_pgsql-patroni-server.yml"
+          ansible.playbook = "provisioning/HA/03_keepalived-haproxy.yml"
           ansible.inventory_path = "provisioning/HA/hosts"
           ansible.inventory_path = "provisioning/HA/hosts_vagrant"
           ansible.extra_vars = "provisioning/HA/variables"
@@ -146,7 +178,7 @@ Vagrant.configure("2") do |config|
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/04_pgsql-client.yml"
+          ansible.playbook = "provisioning/HA/04_etcd-haproxy.yml"
           ansible.inventory_path = "provisioning/HA/hosts"
           ansible.inventory_path = "provisioning/HA/hosts_vagrant"
           ansible.extra_vars = "provisioning/HA/variables"
@@ -154,7 +186,7 @@ Vagrant.configure("2") do |config|
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/05_zabbix.yml"
+          ansible.playbook = "provisioning/HA/05_pgsql-patroni-server.yml"
           ansible.inventory_path = "provisioning/HA/hosts"
           ansible.inventory_path = "provisioning/HA/hosts_vagrant"
           ansible.extra_vars = "provisioning/HA/variables"
@@ -162,7 +194,31 @@ Vagrant.configure("2") do |config|
         end
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/06_pacemaker.yml"
+          ansible.playbook = "provisioning/HA/06_pgsql-client.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
+          ansible.become = "true"
+        end
+        box.vm.provision "ansible" do |ansible|
+          ansible.verbose = "v"
+          ansible.playbook = "provisioning/HA/07_zabbix.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
+          ansible.become = "true"
+        end
+        box.vm.provision "ansible" do |ansible|
+          ansible.verbose = "v"
+          ansible.playbook = "provisioning/HA/08_pacemaker.yml"
+          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
+          ansible.extra_vars = "provisioning/HA/variables"
+          ansible.become = "true"
+        end
+        box.vm.provision "ansible" do |ansible|
+          ansible.verbose = "v"
+          ansible.playbook = "provisioning/HA/09_mamonsu.yml"
           ansible.inventory_path = "provisioning/HA/hosts"
           ansible.inventory_path = "provisioning/HA/hosts_vagrant"
           ansible.extra_vars = "provisioning/HA/variables"

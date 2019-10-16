@@ -1,0 +1,22 @@
+- name: 08_pacemaker_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 08_pacemaker_install
+
+- name: 08_pacemaker_create_cluster
+  hosts:
+    - web1
+    #- hl-zabbix01
+    #- HLzabbix01
+  become: true
+  roles:
+    - 08_pacemaker_create_cluster
+
+- name: 08_pacemaker_service_enable-cron
+  hosts:
+    - web1
+  become: true
+  roles:
+    - 08_pacemaker_service_enable-cron

@@ -112,6 +112,7 @@ Server={{ HOST_NAME_WEB_VIP }}.{{ FAKE_DOMAIN }}
 # Mandatory: no
 # Default:
 # ListenIP=0.0.0.0
+ListenIP={{ ansible_eth1.ipv4.address }}
 
 ### Option: StartAgents
 #	Number of pre-forked instances of zabbix_agentd that process passive checks.

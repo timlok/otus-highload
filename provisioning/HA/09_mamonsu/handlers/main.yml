@@ -1,0 +1,6 @@
+- name: mamonsu restart
+  systemd:
+    name: mamonsu
+    state: restarted
+    daemon-reload: yes
+    enabled: yes

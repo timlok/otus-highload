@@ -1,0 +1,12 @@
+---
+- name: corosync enable
+  systemd:
+    name: corosync
+    state: started
+    enabled: yes
+
+- name: pacemaker enable
+  systemd:
+    name: pacemaker
+    state: started
+    enabled: yes

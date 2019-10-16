@@ -1,0 +1,56 @@
+---
+- name: copy pcs_VIP_reclone.sh
+  copy:
+    src: pcs_VIP_reclone.sh
+    dest: /opt/pcs_VIP_reclone.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: creates an entry "@reboot /opt/pcs_VIP_reclone.sh" in the cron
+  cron:
+    name: "VIP recloning on reboot"
+    special_time: reboot
+    job: "/opt/pcs_VIP_reclone.sh > /opt/pcs_VIP_reclone.log 2>&1"
+
+- name: copy pcs_VIP_reclone.sh
+  copy:
+    src: pcs_VIP_reclone.sh
+    dest: /opt/pcs_VIP_reclone.sh
+    owner: root
+    group: root
+    mode: 0755
+  #delegate_to: HLzabbix02
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['web2'] }}"
+
+- name: creates an entry "@reboot /opt/pcs_VIP_reclone.sh" in the cron
+  cron:
+    name: "VIP recloning on reboot"
+    special_time: reboot
+    job: "/opt/pcs_VIP_reclone.sh > /opt/pcs_VIP_reclone.log 2>&1"
+  #delegate_to: HLzabbix02
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['web2'] }}"
+
+- name: corosync enable
+  systemd:
+    name: corosync
+    state: started
+    enabled: yes
+  #delegate_to: HLzabbix02
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['web2'] }}"
+
+- name: pacemaker enable
+  systemd:
+    name: pacemaker
+    state: started
+    enabled: yes
+  #delegate_to: HLzabbix02
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['web2'] }}"

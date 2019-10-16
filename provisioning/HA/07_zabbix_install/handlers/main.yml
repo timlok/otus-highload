@@ -1,0 +1,6 @@
+---
+- name: zabbix-server restart
+  systemd:
+    name: zabbix-server
+    state: restarted
+    enabled: yes

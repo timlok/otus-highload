@@ -1,0 +1,17 @@
+- name: 07_zabbix_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 07_zabbix_install
+    - 07_zabbix_nginx-php-fpm
+    - 07_zabbix_web-optimization
+
+- name: 07_zabbix_create_DB
+  hosts:
+    - web1
+    #- hl-zabbix01
+    #- HLzabbix01
+  become: true
+  roles:
+    - 07_zabbix_createDB

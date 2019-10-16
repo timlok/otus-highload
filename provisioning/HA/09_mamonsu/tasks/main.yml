@@ -1,0 +1,89 @@
+---
+- name: install required packages
+  yum:
+    name:
+      - git
+      - make
+      - rpm-build
+      - python2-devel
+      - python-setuptools
+    state: latest
+
+- name: clone mamonsu repo
+  git:
+    repo: https://github.com/postgrespro/mamonsu.git
+    dest: /root/mamonsu
+
+- name: assembly of the rpm package mamonsu
+  make:
+    chdir: /root/mamonsu
+    target: rpm
+
+#- name: clone repo and assembly of the rpm package mamonsu
+#  shell: |
+#    cd /root && \
+#    git clone https://github.com/postgrespro/mamonsu.git && \
+#    cd mamonsu && \
+#    make rpm
+
+- name: install mamonsu rpm
+  yum:
+    name: /root/mamonsu/mamonsu-2.4.1-1.el7.noarch.rpm
+    state: present
+
+- name: copy plugin and zabbix-template files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - { src: "biggest_tables.py", dest: "/etc/mamonsu/plugins/biggest_tables.py" }
+    - { src: "zbx_export_template.xml", dest: "/usr/share/mamonsu/template.xml" }
+
+- name: put agent.conf template
+  template:
+   src: mamonsu_agent.conf.j2
+   dest: /etc/mamonsu/agent.conf
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: export tepmlate.xml and add host to zabbix-server
+  shell: |
+    mamonsu zabbix template export /usr/share/mamonsu/template.xml --url=http://"{{ HOST_NAME_WEB_VIP }}".{{ FAKE_DOMAIN }}:8080/zabbix --user="{{ USER_FOR_WEB_GUI_ZABBIX }}" --password="{{ PASS_FOR_WEB_GUI_ZABBIX }}"
+    mamonsu zabbix host create \
+    hl-pgMASTER \
+    $(mamonsu zabbix hostgroup id "Discovered hosts"  --url=http://"{{ HOST_NAME_WEB_VIP }}".{{ FAKE_DOMAIN }}:8080/zabbix --user="{{ USER_FOR_WEB_GUI_ZABBIX }}" --password="{{ PASS_FOR_WEB_GUI_ZABBIX }}") \
+    $(mamonsu zabbix template id PostgresPro-Linux2  --url=http://"{{ HOST_NAME_WEB_VIP }}".{{ FAKE_DOMAIN }}:8080/zabbix --user="{{ USER_FOR_WEB_GUI_ZABBIX }}" --password="{{ PASS_FOR_WEB_GUI_ZABBIX }}") \
+    127.0.0.1 \
+    --url=http://"{{ HOST_NAME_WEB_VIP }}".{{ FAKE_DOMAIN }}:8080/zabbix --user="{{ USER_FOR_WEB_GUI_ZABBIX }}" --password="{{ PASS_FOR_WEB_GUI_ZABBIX }}"
+
+- name: adds extensions to the other databases cascade
+  postgresql_ext:
+    login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
+    login_user: postgres
+    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
+    port: "{{ PORT_FOR_DB_CLIENT }}"
+    db: "{{ item.db }}"
+    name: "{{ item.exten }}"
+    cascade: true
+    state: present
+  with_items:
+    - { db: "template1", exten: "pg_buffercache" }
+    - { db: "template1", exten: "pg_stat_statements" }
+    - { db: "postgres", exten: "pg_buffercache" }
+    - { db: "postgres", exten: "pg_stat_statements" }
+    - { db: "zabbix", exten: "pg_buffercache" }
+    - { db: "zabbix", exten: "pg_stat_statements" }
+  notify:
+    - mamonsu restart
+
+- name: plugin the extension file into the database and restart the patroni cluster
+  shell: |
+    patronictl -c /etc/patroni.yml edit-config --pg pg_stat_statements.track=all --pg track_activity_query_size=2048 --pg shared_preload_libraries=pg_stat_statements --force
+    patronictl -c /etc/patroni.yml restart otus --force
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['database1'] }}"

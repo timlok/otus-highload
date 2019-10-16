@@ -1,3 +1,7 @@
+[balancer]
+HLbalancer01 ansible_host=127.0.0.1 ansible_port=2231 ansible_private_key_file=.vagrant/machines/HLbalancer01/virtualbox/private_key
+HLbalancer02 ansible_host=127.0.0.1 ansible_port=2241 ansible_private_key_file=.vagrant/machines/HLbalancer02/virtualbox/private_key
+
 [pg_conpool]
 HLpgHaproxy ansible_host=127.0.0.1 ansible_port=2321 ansible_private_key_file=.vagrant/machines/HLpgHaproxy/virtualbox/private_key
 
@@ -9,10 +13,22 @@ HLpg01 ansible_host=127.0.0.1 ansible_port=2521 ansible_private_key_file=.vagran
 HLpg02 ansible_host=127.0.0.1 ansible_port=2621 ansible_private_key_file=.vagrant/machines/HLpg02/virtualbox/private_key
 HLpg03 ansible_host=127.0.0.1 ansible_port=2721 ansible_private_key_file=.vagrant/machines/HLpg03/virtualbox/private_key
 
+[database1]
+HLpg01 ansible_host=127.0.0.1 ansible_port=2521 ansible_private_key_file=.vagrant/machines/HLpg01/virtualbox/private_key
+
 [web]
 HLzabbix01 ansible_host=127.0.0.1 ansible_port=2821 ansible_private_key_file=.vagrant/machines/HLzabbix01/virtualbox/private_key
+HLzabbix02 ansible_host=127.0.0.1 ansible_port=2921 ansible_private_key_file=.vagrant/machines/HLzabbix02/virtualbox/private_key
+
+[web1]
+HLzabbix01 ansible_host=127.0.0.1 ansible_port=2821 ansible_private_key_file=.vagrant/machines/HLzabbix01/virtualbox/private_key
+
+[web2]
 HLzabbix02 ansible_host=127.0.0.1 ansible_port=2921 ansible_private_key_file=.vagrant/machines/HLzabbix02/virtualbox/private_key
 
 [pg_conpool_dcs]
 HLpgHaproxy ansible_host=127.0.0.1 ansible_port=2321 ansible_private_key_file=.vagrant/machines/HLpgHaproxy/virtualbox/private_key
 HLetcd ansible_host=127.0.0.1 ansible_port=2421 ansible_private_key_file=.vagrant/machines/HLetcd/virtualbox/private_key
+
+[client]
+HLclient ansible_host=127.0.0.1 ansible_port=2232 ansible_private_key_file=.vagrant/machines/HLclient/virtualbox/private_key

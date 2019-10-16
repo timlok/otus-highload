@@ -1,0 +1,47 @@
+---
+- name: install nginx and php-fpm
+  yum:
+    name:
+    - nginx
+    - php, php-fpm, php-pgsql, php-pear, php-cgi, php-common, php-ldap, php-mbstring, php-snmp, php-gd, php-xml, php-gettext, php-bcmath
+    state: latest
+
+- name: change ownership of a php-session and zabbix-web
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: nginx
+    group: nginx
+    #recurse: yes
+  with_items:
+    - /var/lib/php/session
+    - /etc/zabbix/web
+
+- name: set timezone in php.ini
+  lineinfile:
+    path: /etc/php.ini
+    regexp: '^(;[d]|[d])ate\.timezone\s=($|\s\"[a-zA-Z]*/[a-zA-Z]*\")'
+    backrefs: yes
+    line: date.timezone = "{{ TIMEZONE_OS }}"
+
+- name: editinig php-fpm.d-www.conf
+  shell: |
+    sed -i 's/user = apache/user = nginx/g' /etc/php-fpm.d/www.conf
+    sed -i 's/group = apache/group = nginx/g' /etc/php-fpm.d/www.conf
+    sed -i 's/listen = 127.0.0.1:9000/listen = \/run\/php-fpm\/php-fpm.sock/g' /etc/php-fpm.d/www.conf
+    sed -i 's/;listen.owner = nobody/listen.owner = nginx/g' /etc/php-fpm.d/www.conf
+    sed -i 's/;listen.group = nobody/listen.group = nginx/g' /etc/php-fpm.d/www.conf
+    sed -i 's/;listen.mode = 0660/listen.mode = 0660/g' /etc/php-fpm.d/www.conf
+  notify:
+    - php-fpm restart
+
+- name: put template zabbix.conf for nginx
+  template:
+    src: zabbix.conf.j2
+    dest: /etc/nginx/conf.d/zabbix.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - nginx restart
