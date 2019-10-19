@@ -1,0 +1,64 @@
+---
+- name: import postgresql repo a key from a url
+  rpm_key:
+    key: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG-11
+    state: present
+
+- name: install postgresql vanila repo
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: installed
+
+- name: install PostgreSQL, gcc and python`s packages
+  yum:
+    name:
+      - postgresql11-server
+      - postgresql11
+      - postgresql11-contrib
+      - python2-psycopg2
+      - gcc
+      - python-devel
+      - python-setuptools
+      - python2-pip
+    state: latest
+
+- name: postgresql stopped
+  systemd:
+    name: postgresql-11
+    state: stopped
+    enabled: no
+
+- name: upgrade pip setuptools
+  pip:
+    name: setuptools, pip
+    extra_args: --upgrade
+    state: latest
+
+- name: install python-packages, patroni from pip
+  pip:
+    name: virtualenv, python-etcd, patroni, psycopg2==2.7, urllib3
+    extra_args: --upgrade
+    state: latest
+
+- name: put patroni.yml template
+  template:
+    src: patroni.yml.j2
+    dest: /etc/patroni.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: copy patroni.service
+  copy:
+    src: patroni.service
+    dest: /etc/systemd/system/patroni.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: force systemd to reread configs and patroni start
+  systemd:
+    daemon_reload: yes
+    name: patroni
+    state: restarted
+    enabled: yes

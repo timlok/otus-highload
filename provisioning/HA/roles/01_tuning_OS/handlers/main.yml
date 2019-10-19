@@ -1,0 +1,10 @@
+---
+- name: system restart
+  reboot:
+      reboot_timeout: 120
+
+- name: chronyd start and enable
+  systemd:
+    name: chronyd
+    state: started
+    enabled: yes

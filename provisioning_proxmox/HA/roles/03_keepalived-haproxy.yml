@@ -1,0 +1,6 @@
+- name: 03_keepalived-haproxy
+  hosts:
+    - balancer
+  become: true
+  roles:
+    - 03_keepalived-haproxy

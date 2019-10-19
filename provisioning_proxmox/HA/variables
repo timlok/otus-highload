@@ -3,12 +3,14 @@
 TIMEZONE_OS: 'Europe/Moscow'
 
 #HOSTS_FILE: '/etc/hosts'
-#HOSTS_FILE: '/etc/cloud/templates/hosts.redhat.tmpl'
+HOSTS_FILE: '/etc/cloud/templates/hosts.redhat.tmpl'
 
 #zabbix
 IP_ZAB_CLUSTER: '10.51.21.56'
 PASS_ZAB_FOR_DB: 'zabb_xPas5'
 PORT_FOR_DB_CLIENT: '5000'
+USER_FOR_WEB_GUI_ZABBIX: 'Admin'
+PASS_FOR_WEB_GUI_ZABBIX: 'zabbix'
 
 #postgres
 PASS_POSTGRES_FOR_DB: 'gfhjkm'
@@ -18,27 +20,42 @@ NET_POSTGRES_ALLOW: '10.51.21.0/24'
 PASS_HACLUSTER_USER: 'Ozae2doipi1Nahzi'
 IP_ZAB_CLUSTER_NIC: 'eth0'
 
+#balancer
+IP_BALANCER_NIC: 'eth0'
+PASS_FOR_KEEPALIVED: 'ieSietoco1Aith6e'
+PASS_FOR_HAPROXY: 'ohd5ooghuNgai5oh'
+USER_HAPROXY: 'balancer'
+
 #домен
 FAKE_DOMAIN: 'otus'
 
 ########## хосты ##########
+HOST_NAME_BALANCER_01: 'hl-balancer01'
+HOST_IP_BALANCER_01: '10.51.21.51'
+
+HOST_NAME_BALANCER_02: 'hl-balancer02'
+HOST_IP_BALANCER_02: '10.51.21.52'
+
+HOST_NAME_BALANCER_VIP: 'hl-balancer-vip'
+HOST_IP_BALANCER_VIP: '10.51.21.50'
+
 HOST_NAME_HL_CLIENT: 'hl-client'
 HOST_IP_HL_CLIENT: '10.51.21.70'
 
-HOST_NAME_HA_VIP: 'hl-haproxy-vip'
-HOST_IP_HA_VIP: '10.51.21.50'
+#HOST_NAME_HA_VIP: 'hl-haproxy-vip'
+#HOST_IP_HA_VIP: '10.51.21.50'
 
-HOST_NAME_HA_01: 'hl-haproxy01'
-HOST_IP_HA_01: '10.51.21.51'
+#HOST_NAME_HA_01: 'hl-haproxy01'
+#HOST_IP_HA_01: '10.51.21.51'
 
-HOST_NAME_HA_02: 'hl-haproxy02'
-HOST_IP_HA_02: '10.51.21.52'
+#HOST_NAME_HA_02: 'hl-haproxy02'
+#HOST_IP_HA_02: '10.51.21.52'
 
-HOST_NAME_MQ_01: 'hl-mq01'
-HOST_IP_MQ_01: '10.51.21.53'
+#HOST_NAME_MQ_01: 'hl-mq01'
+#HOST_IP_MQ_01: '10.51.21.53'
 
-HOST_NAME_MQ_02: 'hl-mq02'
-HOST_IP_MQ_02: '10.51.21.54'
+#HOST_NAME_MQ_02: 'hl-mq02'
+#HOST_IP_MQ_02: '10.51.21.54'
 
 #свободен 10.51.21.55
 

@@ -1,0 +1,21 @@
+---
+- name: system restart
+  reboot:
+      reboot_timeout: 120
+
+- name: cloud-init restart
+  systemd:
+    name: cloud-init
+    state: restarted
+
+- name: chronyd start and enable
+  systemd:
+    name: chronyd
+    state: started
+    enabled: yes
+
+- name: qemu-guest-agent restart
+  systemd:
+    name: qemu-guest-agent
+    state: restarted
+    enabled: yes

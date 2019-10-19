@@ -1,0 +1,28 @@
+---
+- name: import postgresql repo a key from a url
+  rpm_key:
+    key: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG-11
+    state: present
+
+- name: install postgresql vanila repo
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: installed
+
+- name: install PostgreSQL, web-browsers
+  yum:
+    name:
+      - postgresql11
+      - postgresql11-contrib
+      - python2-psycopg2
+      - elinks
+      - lynx
+    state: latest
+
+- name: put pgpass template
+  template:
+    src: pgpass.j2
+    dest: /root/.pgpass
+    owner: root
+    group: root
+    mode: '0600'

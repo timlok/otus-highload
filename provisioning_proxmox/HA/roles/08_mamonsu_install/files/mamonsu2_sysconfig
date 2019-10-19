@@ -1,0 +1,4 @@
+CONFIG=/etc/mamonsu/agent.conf
+PIDDIR=/var/run/mamonsu
+PIDFILE=/var/run/mamonsu/mamonsu.pid
+LOGFILE=/var/log/mamonsu/agent.log

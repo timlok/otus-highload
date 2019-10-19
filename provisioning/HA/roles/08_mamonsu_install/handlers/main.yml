@@ -1,0 +1,6 @@
+- name: mamonsu2 stopped and disabled
+  systemd:
+    name: mamonsu2
+    state: stopped
+    daemon-reload: yes
+    enabled: no

@@ -1,0 +1,43 @@
+---
+- name: add mamonsu repository
+  yum_repository:
+    name: mamonsu
+    description: mamonsu
+    baseurl:
+      - http://"{{ HOST_NAME_WEB02 }}"."{{ FAKE_DOMAIN }}":8081/repo
+      - http://"{{ HOST_IP_WEB02 }}":8081/repo
+    gpgcheck: no
+    enabled: yes
+
+- name: install mamonsu from repo
+  yum:
+    name: mamonsu
+    state: latest
+
+#- name: delete init.d script mamonsu
+#  file:
+#    path: /etc/init.d/mamonsu
+#    state: absent
+
+- name: put agent.conf template
+  template:
+   src: mamonsu_agent.conf.j2
+   dest: /etc/mamonsu/agent.conf
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: copy plugin, zabbix-template and systemd-unit files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - { src: "biggest_tables.py", dest: "/etc/mamonsu/plugins/biggest_tables.py" }
+    - { src: "zbx_export_template.xml", dest: "/usr/share/mamonsu/template.xml" }
+    - { src: "mamonsu2_sysconfig", dest: "/etc/sysconfig/mamonsu2" }
+    - { src: "mamonsu2.service", dest: "/etc/systemd/system/mamonsu2.service" }
+  notify:
+    - mamonsu2 stopped and disabled

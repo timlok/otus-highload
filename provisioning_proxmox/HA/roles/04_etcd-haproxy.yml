@@ -1,0 +1,13 @@
+- name: 04_etcd
+  hosts:
+    - hl-etcd
+  become: true
+  roles:
+    - 04_etcd
+
+- name: 04_haproxy
+  hosts:
+    - hl-pg-haproxy
+  become: true
+  roles:
+    - 04_haproxy

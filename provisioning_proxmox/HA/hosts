@@ -1,3 +1,7 @@
+[balancer]
+hl-balancer01 ansible_user=otus ansible_host=hl-balancer01 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+hl-balancer02 ansible_user=otus ansible_host=hl-balancer02 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+
 [pg_conpool]
 hl-pg-haproxy ansible_user=otus ansible_host=hl-pg-haproxy ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
 
@@ -9,10 +13,22 @@ hl-pg01 ansible_user=otus ansible_host=hl-pg01 ansible_port=22 ansible_private_k
 hl-pg02 ansible_user=otus ansible_host=hl-pg02 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
 hl-pg03 ansible_user=otus ansible_host=hl-pg03 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
 
+[database1]
+hl-pg01 ansible_user=otus ansible_host=hl-pg01 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+
 [web]
 hl-zabbix01 ansible_user=otus ansible_host=hl-zabbix01 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+hl-zabbix02 ansible_user=otus ansible_host=hl-zabbix02 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+
+[web1]
+hl-zabbix01 ansible_user=otus ansible_host=hl-zabbix01 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+
+[web2]
 hl-zabbix02 ansible_user=otus ansible_host=hl-zabbix02 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
 
 [pg_conpool_dcs]
 hl-pg-haproxy ansible_user=otus ansible_host=hl-pg-haproxy ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
 hl-etcd ansible_user=otus ansible_host=hl-etcd ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+
+[client]
+hl-client ansible_user=otus ansible_host=hl-client ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand

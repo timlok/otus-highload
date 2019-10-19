@@ -1,4 +1,0 @@
----
-- name: system restart
-  reboot:
-      reboot_timeout: 120

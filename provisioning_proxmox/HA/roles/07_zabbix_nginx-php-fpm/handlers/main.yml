@@ -1,0 +1,12 @@
+---
+- name: php-fpm restart
+  systemd:
+    name: php-fpm
+    state: restarted
+    enabled: yes
+
+- name: nginx restart
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

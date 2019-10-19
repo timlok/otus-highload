@@ -153,76 +153,13 @@ Vagrant.configure("2") do |config|
         SHELL
 
         box.vm.provision "ansible" do |ansible|
-          #ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/01_tuning_OS.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/02_hl-client_docker-yandextank.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
+          ansible.playbook = "provisioning/HA/00_all.yml"
           ansible.inventory_path = "provisioning/HA/hosts_vagrant"
           ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
-          ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/03_keepalived-haproxy.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
-          ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/04_etcd-haproxy.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
-          ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/05_pgsql-patroni-server.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
-          ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/06_pgsql-client.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
-          ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/07_zabbix.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
-          ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/08_pacemaker.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
-        end
-        box.vm.provision "ansible" do |ansible|
-          ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/09_mamonsu.yml"
-          ansible.inventory_path = "provisioning/HA/hosts"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
-          ansible.become = "true"
+          #ansible.limit = "web"
+          #ansible.config_file = "provisioning/HA/ansible.cfg"
         end
 
       end

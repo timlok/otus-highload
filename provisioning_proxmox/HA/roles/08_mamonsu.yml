@@ -1,0 +1,24 @@
+- name: 08_mamonsu_build_and_create_repo
+  hosts:
+    - web2
+    #- hl-zabbix01
+    #- HLzabbix01
+  become: true
+  roles:
+    - 08_mamonsu_build_and_create_repo
+
+- name: 08_mamonsu_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 08_mamonsu_install
+
+- name: 08_mamonsu_zabbix-postgres
+  hosts:
+    - web1
+    #- hl-zabbix01
+    #- HLzabbix01
+  become: true
+  roles:
+    - 08_mamonsu_zabbix-postgres

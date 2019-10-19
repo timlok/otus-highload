@@ -1,8 +1,0 @@
-- name: 09_mamonsu
-  hosts:
-    - web1
-    #- hl-zabbix01
-    #- HLzabbix01
-  become: true
-  roles:
-    - 09_mamonsu

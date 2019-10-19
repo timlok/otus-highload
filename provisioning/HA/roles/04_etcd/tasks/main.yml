@@ -1,0 +1,28 @@
+---
+- name: install etcd
+  yum:
+    name: etcd
+    state: latest
+
+- name: copy etcd.service
+  copy:
+    src: etcd.service
+    dest: /usr/lib/systemd/system/etcd.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: put etcd.conf template
+  template:
+    src: etcd.conf.j2
+    dest: /etc/etcd/etcd.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: force systemd to reread configs and etcd start
+  systemd:
+    daemon_reload: yes
+    name: etcd
+    state: restarted
+    enabled: yes

@@ -1,0 +1,6 @@
+- name: 02_hl-client_docker-yandextank
+  hosts: client
+  become: true
+#  gather_facts: true
+  roles:
+    - 02_hl-client_docker-yandextank

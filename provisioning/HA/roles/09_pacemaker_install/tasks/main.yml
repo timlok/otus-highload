@@ -1,0 +1,18 @@
+---
+- name: install pcs, pacemaker, corosync
+  yum:
+    name:
+      - pcs
+      - pacemaker
+      - corosync
+    state: latest
+
+- name: change password for hacluster user
+  shell:
+    echo {{ PASS_HACLUSTER_USER }} | passwd --stdin hacluster
+
+- name: start pcsd.service
+  systemd:
+    name: pcsd
+    state: started
+    enabled: yes

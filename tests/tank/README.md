@@ -5,19 +5,19 @@
 Запускать, например, так
 
 ```bash
-docker run -v $(pwd):/var/loadtest -v $HOME/.ssh:/home/otus/.ssh -it direvius/yandex-tank
+docker run -v $(pwd):/var/loadtest -v $HOME/.ssh:/home/otus/.ssh --rm -it direvius/yandex-tank
 ```
 
 или  так, если не нужно по ssh мониторить нагрузку на жертву
 
 ```bash
-docker run -v $(pwd):/var/loadtest -it direvius/yandex-tank
+docker run -v $(pwd):/var/loadtest --rm -it direvius/yandex-tank
 ```
 
 или так, если нужно залогиниться в контейнер
 
 ```bash
-docker run --entrypoint /bin/bash -v $(pwd):/var/loadtest -it direvius/yandex-tank
+docker run --entrypoint /bin/bash -v $(pwd):/var/loadtest --rm -it direvius/yandex-tank
 ```
 
 Тесты были направлены на VIP-адрес pacemaker-кластера и привожу результаты без улучшений и оптимизаций и с оптимизациями. В каких-то тестах pacemaker перебрасывал VIP на другой хост и поднимал упавший php-fpm. Был оптимизирован  только php-fpm, т.к. производительность веба упиралась в него. На каждой ВМ 1 ядро ЦП и 2 ГБ ОЗУ. Единовременно нагрузка была только на одну ВМ (VIP-адрес). Заметил странность - одновременно работающие redis и memcached дают лучший результат, чем поодиночке. Хотя использовать их оба не стоит, вроде как.
