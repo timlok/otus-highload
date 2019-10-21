@@ -96,7 +96,7 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/), Siege\
 Мониторинг параметров СУБД PostgreSql реализован с помощью утилиты [mamonsu](https://postgrespro.ru/products/extensions/mamonsu) от компании PotgresPro.
 В моём стенде это ПО устанавливается на обе ноды сервера zabbix и настраивается на мониторинг текущего мастер-сервера БД. Конечно, в каждый момент времени работает только один экземпляр mamonsu. Это достигнуто в результате кластеризации с помощью pacemaker/corosync и введения ограничений на расположение и связанность ресурсов.
 
-#### pacemaker/corosync
+### pacemaker/corosync
 
 Web-интерфейс кластера [https://hl-zabbix-vip.otus:2224](https://hl-zabbix-vip.otus:2224) или [https://10.51.21.56:2224](https://10.51.21.56:2224) (или https://имя_или_адрес_любой_ноды:2224)
 
