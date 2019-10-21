@@ -5,6 +5,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+SyslogIdentifier=mamonsu2
 Type=simple
 PIDFile=/var/run/mamonsu/mamonsu.pid
 EnvironmentFile=/etc/sysconfig/mamonsu2
