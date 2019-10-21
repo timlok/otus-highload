@@ -39,3 +39,5 @@ docker run --entrypoint /bin/bash -v $(pwd):/var/loadtest --rm -it direvius/yand
 Подробные результаты и выводы приведены в соответствующих файлах:
 
 - [web01.md](web01.md) - тестирование web (HA-кластер без http-балансировки)
+- [web02.md](web02.md) - тестирование web (HA-кластер с http-балансировкой)
+
