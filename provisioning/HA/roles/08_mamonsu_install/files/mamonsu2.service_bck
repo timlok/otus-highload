@@ -6,19 +6,15 @@ Wants=network-online.target
 
 [Service]
 SyslogIdentifier=mamonsu2
-#Type=simple
-Type=forking
-Restart=on-failure
+Type=simple
 PIDFile=/var/run/mamonsu/mamonsu2.pid
 EnvironmentFile=/etc/sysconfig/mamonsu2
 ExecStartPre=/bin/sh -c 'rm -rf $PIDDIR && mkdir $PIDDIR && touch $PIDFILE && chown -R mamonsu. $PIDDIR'
 ExecStart=/usr/bin/python /usr/bin/mamonsu -d -a /etc/mamonsu/plugins -c $CONFIG -p $PIDFILE
-ExecStopPost=/bin/rm -f $PIDFile
-ExecStop=/bin/kill -SIGTERM $MAINPID
+#ExecStopPost=/bin/rm -f $PIDFILE
 #User=mamonsu
 #Group=mamonsu
 KillMode=process
-#KillMode=control-group
 RestartSec=10s
 
 [Install]

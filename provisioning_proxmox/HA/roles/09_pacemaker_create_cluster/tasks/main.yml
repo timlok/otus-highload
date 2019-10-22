@@ -17,7 +17,7 @@
 #    pcs constraint order zabbix_server then php-fpm
 #    pcs constraint order php-fpm then nginx
 
-- name: pacemaker create active-passive cluster from three resources (zabbix-server, mamonsu, VIP)
+- name: pacemaker create active-passive cluster from three resources (zabbix-server, mamonsu2, VIP)
   shell: |
     pcs cluster auth {{ HOST_NAME_WEB01 }}.{{ FAKE_DOMAIN }} {{ HOST_NAME_WEB02 }}.{{ FAKE_DOMAIN }} -u hacluster -p {{ PASS_HACLUSTER_USER }} --force
     pcs cluster setup --force --name cl-zabbix {{ HOST_NAME_WEB01 }}.{{ FAKE_DOMAIN }} {{ HOST_NAME_WEB02 }}.{{ FAKE_DOMAIN }}
@@ -26,11 +26,11 @@
     pcs property set stonith-enabled=false
     pcs resource create cluster_vip ocf:heartbeat:IPaddr2 ip="{{ IP_ZAB_CLUSTER }}" cidr_netmask="24" nic="{{ IP_ZAB_CLUSTER_NIC }}" op monitor interval="4s"
     pcs resource create zabbix_server systemd:zabbix-server op monitor interval=10s
-    pcs resource create mamonsu systemd:mamonsu2 op monitor interval=10s
+    pcs resource create mamonsu2 systemd:mamonsu2 op monitor interval=30s start-delay=10s
     pcs constraint colocation add zabbix_server cluster_vip INFINITY
-    pcs constraint colocation set mamonsu sequential=false set zabbix_server cluster_vip
+    pcs constraint colocation set mamonsu2 sequential=false set zabbix_server cluster_vip
     pcs constraint order cluster_vip then zabbix_server
-    pcs constraint order zabbix_server then mamonsu
+    pcs constraint order zabbix_server then mamonsu2
   notify:
     - corosync enable
     - pacemaker enable

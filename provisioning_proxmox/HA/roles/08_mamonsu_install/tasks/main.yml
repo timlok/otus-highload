@@ -14,10 +14,29 @@
     name: mamonsu
     state: latest
 
-#- name: delete init.d script mamonsu
-#  file:
-#    path: /etc/init.d/mamonsu
-#    state: absent
+- name: move mamonsu init.d script
+  copy:
+   remote_src: /etc/init.d/mamonsu
+   dest: /root/mamonsu_initd_bck
+
+- name: delete init.d script mamonsu
+  file:
+    path: /etc/init.d/mamonsu
+    state: absent
+
+- name: copy logrotate mamonsu config
+  copy:
+   src: mamonsu_logrotate
+   dest: /etc/logrotate.d/mamonsu
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: rsyslog restarted and systemd force reread services configuration
+  systemd:
+    name: rsyslog
+    state: restarted
+    daemon-reload: yes
 
 - name: put agent.conf template
   template:
