@@ -6,7 +6,10 @@ HLbalancer02 ansible_host=127.0.0.1 ansible_port=2241 ansible_private_key_file=.
 HLpgHaproxy ansible_host=127.0.0.1 ansible_port=2321 ansible_private_key_file=.vagrant/machines/HLpgHaproxy/virtualbox/private_key
 
 [dcs]
-HLetcd ansible_host=127.0.0.1 ansible_port=2421 ansible_private_key_file=.vagrant/machines/HLetcd/virtualbox/private_key
+#HLetcd ansible_host=127.0.0.1 ansible_port=2421 ansible_private_key_file=.vagrant/machines/HLetcd/virtualbox/private_key
+HLdcs01 ansible_host=127.0.0.1 ansible_port=2251 ansible_private_key_file=.vagrant/machines/HLdcs01/virtualbox/private_key
+HLdcs02 ansible_host=127.0.0.1 ansible_port=2252 ansible_private_key_file=.vagrant/machines/HLdcs02/virtualbox/private_key
+HLdcs03 ansible_host=127.0.0.1 ansible_port=2253 ansible_private_key_file=.vagrant/machines/HLdcs03/virtualbox/private_key
 
 [database]
 HLpg01 ansible_host=127.0.0.1 ansible_port=2521 ansible_private_key_file=.vagrant/machines/HLpg01/virtualbox/private_key

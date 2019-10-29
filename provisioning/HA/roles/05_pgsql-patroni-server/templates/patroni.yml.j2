@@ -5,8 +5,10 @@ restapi:
     listen: {{ ansible_eth1.ipv4.address }}:8008
     connect_address: {{ ansible_eth1.ipv4.address }}:8008
 
-etcd:
-    host: {{ HOST_NAME_DCS }}.{{ FAKE_DOMAIN }}:2379
+consul:
+    host: 127.0.0.1:8500
+    scheme: http
+    register_service: true
 
 bootstrap:
     dcs:

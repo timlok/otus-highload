@@ -1,0 +1,6 @@
+- name: 04_consul-cluster
+  hosts:
+    - dcs
+  become: true
+  roles:
+    - 04_consul-cluster

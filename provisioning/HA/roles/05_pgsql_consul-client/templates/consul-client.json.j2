@@ -1,0 +1,18 @@
+{
+    "advertise_addr": "{{ ansible_eth1.ipv4.address }}",
+    "datacenter": "{{ CONSUL_DATACENTER }}",
+    "data_dir": "/var/lib/consul",
+    "domain": "consul",
+    "enable_script_checks": true,
+    "enable_syslog": true,
+    "log_level": "INFO",
+    "encrypt": "{{ CONSUL_KEY }}",
+    "leave_on_terminate": true,
+    "rejoin_after_leave": true,
+    "server": false,
+    "start_join": [
+        "{{ HOST_NAME_DCS_01 }}",
+        "{{ HOST_NAME_DCS_02 }}",
+        "{{ HOST_NAME_DCS_03 }}"
+    ]
+}

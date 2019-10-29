@@ -21,6 +21,24 @@ MACHINES = {
                {ip: '10.51.21.59', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
+  :HLdcs01 => {
+    :box_name => "centos/7",
+    :net => [
+               {ip: '10.51.21.61', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+            ]
+  },
+  :HLdcs02 => {
+    :box_name => "centos/7",
+    :net => [
+               {ip: '10.51.21.62', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+            ]
+  },
+  :HLdcs03 => {
+    :box_name => "centos/7",
+    :net => [
+               {ip: '10.51.21.63', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+            ]
+  },
   :HLetcd => {
     :box_name => "centos/7",
     :net => [
@@ -88,6 +106,21 @@ Vagrant.configure("2") do |config|
     c.vm.network "forwarded_port", adapter: 1, guest: 5000, host: 5000, host_ip: '127.0.0.1'
     c.vm.network "forwarded_port", adapter: 1, guest: 7000, host: 7000, host_ip: '127.0.0.1'
     #c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+  end
+  config.vm.define "HLdcs01" do |c|
+    c.vm.hostname = "hl-dcs01"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2251, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+  end
+  config.vm.define "HLdcs02" do |c|
+    c.vm.hostname = "hl-dcs02"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2252, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+  end
+  config.vm.define "HLdcs03" do |c|
+    c.vm.hostname = "hl-dcs03"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2253, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
   config.vm.define "HLetcd" do |c|
     c.vm.hostname = "hl-etcd"
@@ -158,6 +191,7 @@ Vagrant.configure("2") do |config|
           ansible.inventory_path = "provisioning/HA/hosts_vagrant"
           ansible.extra_vars = "provisioning/HA/variables"
           ansible.become = "true"
+          #ansible.tags = "update_hosts"
           #ansible.limit = "web"
           #ansible.config_file = "provisioning/HA/ansible.cfg"
         end

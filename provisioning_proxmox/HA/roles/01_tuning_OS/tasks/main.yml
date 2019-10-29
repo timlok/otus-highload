@@ -102,9 +102,12 @@
     - { name: "{{ HOST_NAME_BALANCER_02 }}", ip: "{{ HOST_IP_BALANCER_02 }} "}
     - { name: "{{ HOST_NAME_PG_HAPROXY }}", ip: "{{ HOST_IP_PG_HAPROXY }}" }
     - { name: "{{ HOST_NAME_PG_CON_POOL_VIP }}", ip: "{{ HOST_IP_PG_CON_POOL_VIP }}" }
-    - { name: "{{ HOST_NAME_PG_CON_POOL_01 }}", ip: "{{ HOST_IP_PG_CON_POOL_01 }}" }
-    - { name: "{{ HOST_NAME_PG_CON_POOL_02 }}", ip: "{{ HOST_IP_PG_CON_POOL_02 }}" }
-    - { name: "{{ HOST_NAME_PG_CON_POOL_03 }}", ip: "{{ HOST_IP_PG_CON_POOL_03 }}" }
+#    - { name: "{{ HOST_NAME_PG_CON_POOL_01 }}", ip: "{{ HOST_IP_PG_CON_POOL_01 }}" }
+#    - { name: "{{ HOST_NAME_PG_CON_POOL_02 }}", ip: "{{ HOST_IP_PG_CON_POOL_02 }}" }
+#    - { name: "{{ HOST_NAME_PG_CON_POOL_03 }}", ip: "{{ HOST_IP_PG_CON_POOL_03 }}" }
+    - { name: "{{ HOST_NAME_DCS_01 }}", ip: "{{ HOST_IP_DCS_01 }}" }
+    - { name: "{{ HOST_NAME_DCS_02 }}", ip: "{{ HOST_IP_DCS_02 }}" }
+    - { name: "{{ HOST_NAME_DCS_03 }}", ip: "{{ HOST_IP_DCS_03 }}" }
     - { name: "{{ HOST_NAME_PG01 }}", ip: "{{ HOST_IP_PG01 }}" }
     - { name: "{{ HOST_NAME_PG02 }}", ip: "{{ HOST_IP_PG02 }}" }
     - { name: "{{ HOST_NAME_PG03 }}", ip: "{{ HOST_IP_PG03 }}" }

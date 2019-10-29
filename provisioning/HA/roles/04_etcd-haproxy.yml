@@ -1,10 +1,10 @@
-- name: 04_etcd
-  hosts:
-    - hl-etcd
-    - HLetcd
-  become: true
-  roles:
-    - 04_etcd
+#- name: 04_etcd
+#  hosts:
+#    - hl-etcd
+#    - HLetcd
+#  become: true
+#  roles:
+#    - 04_etcd
 
 - name: 04_haproxy
   hosts:

@@ -1,0 +1,27 @@
+# Consul-client systemd service unit file
+[Unit]
+Description=Consul-client Service Discovery Agent
+Documentation=https://www.consul.io/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+#Environment=GOMAXPROCS=2
+#PIDFile=/run/consul.pid
+Type=simple
+User=consul
+Group=consul
+ExecStart=/usr/local/bin/consul agent \
+        -client=0.0.0.0 \
+        -bind=0.0.0.0 \
+        -config-dir=/etc/consul.d
+
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+TimeoutStopSec=5
+Restart=on-failure
+
+SyslogIdentifier=consul-client
+
+[Install]
+WantedBy=multi-user.target

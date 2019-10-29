@@ -6,7 +6,10 @@ hl-balancer02 ansible_user=otus ansible_host=hl-balancer02 ansible_port=22 ansib
 hl-pg-haproxy ansible_user=otus ansible_host=hl-pg-haproxy ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
 
 [dcs]
-hl-etcd ansible_user=otus ansible_host=hl-etcd ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+#hl-etcd ansible_user=otus ansible_host=hl-etcd ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+hl-dcs01 ansible_user=otus ansible_host=hl-dcs01 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+hl-dcs02 ansible_user=otus ansible_host=hl-dcs02 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
+hl-dcs03 ansible_user=otus ansible_host=hl-dcs03 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand
 
 [database]
 hl-pg01 ansible_user=otus ansible_host=hl-pg01 ansible_port=22 ansible_private_key_file=/home/otus/.ssh/hlstand

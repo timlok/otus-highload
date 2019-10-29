@@ -40,3 +40,91 @@ https://overload.yandex.net/221490
 Проводились два теста через небольшой промежуток времени, поэтому графики выглядят так:
 
 ![web03.png](files/web03.png)
+
+```
+# DB Version: 11
+# OS Type: linux
+# DB Type: dw
+# Total Memory (RAM): 4 GB
+# CPUs num: 2
+# Connections num: 200
+# Data Storage: hdd
+
+max_connections = 200
+shared_buffers = 1GB
+effective_cache_size = 3GB
+maintenance_work_mem = 512MB
+checkpoint_completion_target = 0.9
+wal_buffers = 16MB
+default_statistics_target = 500
+random_page_cost = 4
+effective_io_concurrency = 2
+work_mem = 2621kB
+min_wal_size = 4GB
+max_wal_size = 8GB
+max_worker_processes = 2
+max_parallel_workers_per_gather = 1
+max_parallel_workers = 2
+```
+
+https://overload.yandex.net/222008
+
+
+
+```
+# DB Version: 11
+# OS Type: linux
+# DB Type: dw
+# Total Memory (RAM): 4 GB
+# CPUs num: 2
+# Connections num: 400
+# Data Storage: hdd
+
+max_connections = 400
+shared_buffers = 1GB
+effective_cache_size = 3GB
+maintenance_work_mem = 512MB
+checkpoint_completion_target = 0.9
+wal_buffers = 16MB
+default_statistics_target = 500
+random_page_cost = 4
+effective_io_concurrency = 2
+work_mem = 1310kB
+min_wal_size = 4GB
+max_wal_size = 8GB
+max_worker_processes = 2
+max_parallel_workers_per_gather = 1
+max_parallel_workers = 2
+```
+
+https://overload.yandex.net/222013
+
+
+
+```
+# DB Version: 11
+# OS Type: linux
+# DB Type: dw
+# Total Memory (RAM): 4 GB
+# CPUs num: 2
+# Connections num: 600
+# Data Storage: hdd
+
+max_connections = 600
+shared_buffers = 1GB
+effective_cache_size = 3GB
+maintenance_work_mem = 512MB
+checkpoint_completion_target = 0.9
+wal_buffers = 16MB
+default_statistics_target = 500
+random_page_cost = 4
+effective_io_concurrency = 2
+work_mem = 873kB
+min_wal_size = 4GB
+max_wal_size = 8GB
+max_worker_processes = 2
+max_parallel_workers_per_gather = 1
+max_parallel_workers = 2
+```
+
+https://overload.yandex.net/222011

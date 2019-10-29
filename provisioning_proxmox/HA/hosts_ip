@@ -6,15 +6,18 @@ hl-balancer02 ansible_user=otus ansible_host=10.51.21.52 ansible_port=22 ansible
 hl-pg-haproxy ansible_user=otus ansible_host=10.51.21.59 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [dcs]
-hl-etcd ansible_user=otus ansible_host=10.51.21.64 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+#hl-etcd ansible_user=otus ansible_host=10.51.21.64 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-dcs01 ansible_user=otus ansible_host=10.51.21.61 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-dcs02 ansible_user=otus ansible_host=10.51.21.62 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-dcs03 ansible_user=otus ansible_host=10.51.21.63 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [database]
 hl-pg01 ansible_user=otus ansible_host=10.51.21.65 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
-hl-pg02 ansible_user=otus ansible_host=10.51.21.66 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
-hl-pg03 ansible_user=otus ansible_host=10.51.21.67 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+#hl-pg02 ansible_user=otus ansible_host=10.51.21.66 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+#hl-pg03 ansible_user=otus ansible_host=10.51.21.67 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [database1]
-hl-pg01 ansible_user=otus ansible_host=10.51.21.67 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-pg01 ansible_user=otus ansible_host=10.51.21.65 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [web]
 hl-zabbix01 ansible_user=otus ansible_host=10.51.21.57 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa

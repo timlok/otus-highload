@@ -1,4 +1,4 @@
-- name: 05_pgsql-patroni-server
+- name: 05_pgsql-patroni
   hosts:
     - database
 #    - hl-pg01
@@ -7,4 +7,5 @@
   become: true
 
   roles:
+    - 05_pgsql_consul-client
     - 05_pgsql-patroni-server

@@ -2,8 +2,9 @@
 - import_playbook: roles/01_tuning_OS.yml
 - import_playbook: roles/02_hl-client_docker-yandextank.yml
 - import_playbook: roles/03_keepalived-haproxy.yml
+- import_playbook: roles/04_consul-cluster.yml
 - import_playbook: roles/04_etcd-haproxy.yml
-- import_playbook: roles/05_pgsql-patroni-server.yml
+- import_playbook: roles/05_pgsql-patroni.yml
 - import_playbook: roles/06_pgsql-client.yml
 - import_playbook: roles/07_zabbix.yml
 - import_playbook: roles/08_mamonsu.yml
