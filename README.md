@@ -130,7 +130,7 @@ Web-интерфейс кластера [https://hl-zabbix-vip.otus:2224](https:
 Подключение к БД postgresql ограничено в pg_hba.conf (patroni) только сетью 10.51.21.0/24.
 
 К сожалению, со стороны приложения (Zabbix) нет возможности каким-либо образом настроить отправку read-only запросов на другую БД.
-https://support.zabbix.com/browse/ZBXNEXT-1603
+[https://support.zabbix.com/browse/ZBXNEXT-1603](https://support.zabbix.com/browse/ZBXNEXT-1603)
 
 ### разное
 
