@@ -15,6 +15,7 @@
       - postgresql11-server
       - postgresql11
       - postgresql11-contrib
+      - pg_top
       - python2-psycopg2
       - gcc
       - python-devel
