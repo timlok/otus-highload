@@ -23,7 +23,7 @@ IP_ZAB_CLUSTER_NIC: 'eth0'
 #balancer
 IP_BALANCER_NIC: 'eth0'
 PASS_FOR_KEEPALIVED: 'ieSietoco1Aith6e'
-PASS_FOR_HAPROXY: 'ohd5ooghuNgai5oh'
+PASS_FOR_HAPROXY: 'balancer'
 USER_HAPROXY: 'balancer'
 
 #consul

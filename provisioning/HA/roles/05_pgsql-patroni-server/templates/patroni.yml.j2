@@ -54,7 +54,7 @@ postgresql:
             username: postgres
             password: {{ PASS_POSTGRES_FOR_DB }}
     parameters:
-        unix_socket_directories: '.'
+        unix_socket_directories: '.,/tmp'
 
 tags:
     nofailover: false

@@ -10,3 +10,10 @@
     name: redis
     state: restarted
     enabled: yes
+
+- name: php-fpm restart
+  systemd:
+    name: php-fpm
+    daemon-reload: yes
+    state: restarted
+    enabled: yes

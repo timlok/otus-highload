@@ -7,7 +7,7 @@ global
         #log loghost    local0 info
 
         maxconn 4096
-
+        maxsessrate 4096
         #chroot /usr/share/haproxy
         chroot      /var/lib/haproxy
         pidfile     /var/run/haproxy.pid
@@ -43,7 +43,7 @@ defaults
         timeout server          1m
         timeout http-keep-alive 10s
         timeout check           10s
-        maxconn                 3000
+        maxconn                 10000
         #maxconn 3000
         #contimeout      5000
         #clitimeout      50000
@@ -90,5 +90,5 @@ backend hl-zabbix
         option httpclose
         option forwardfor
         cookie SERVERNAME insert indirect nocache
-        server {{ HOST_NAME_WEB01 }}.{{ FAKE_DOMAIN }} {{ HOST_IP_WEB01 }}:8080 cookie s1 check
-        server {{ HOST_NAME_WEB02 }}.{{ FAKE_DOMAIN }} {{ HOST_IP_WEB02 }}:8080 cookie s2 check
+        server {{ HOST_NAME_WEB01 }}.{{ FAKE_DOMAIN }} {{ HOST_IP_WEB01 }}:8080 maxconn 5000 cookie s1 check
+        server {{ HOST_NAME_WEB02 }}.{{ FAKE_DOMAIN }} {{ HOST_IP_WEB02 }}:8080 maxconn 5000 cookie s2 check

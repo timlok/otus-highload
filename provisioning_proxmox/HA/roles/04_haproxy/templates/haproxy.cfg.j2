@@ -11,7 +11,7 @@ global
     user        haproxy             #Haproxy running under user and group "haproxy"
     group       haproxy
     daemon
-
+    maxsessrate 10000
     # turn on stats unix socket
     stats socket /var/lib/haproxy/stats
 
@@ -35,7 +35,7 @@ defaults
     timeout server          1m
     timeout http-keep-alive 10s
     timeout check           10s
-    maxconn                 3000
+    maxconn                 4000
 
 #---------------------------------------------------------------------
 #HAProxy Monitoring Config
@@ -83,6 +83,6 @@ listen postgres
         option httpchk
         http-check expect status 200
         default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
-        server postgresql_pg01_5432 {{ HOST_NAME_PG01 }}.{{ FAKE_DOMAIN }}:5432 maxconn 100 check port 8008
-        server postgresql_pg02_5432 {{ HOST_NAME_PG02 }}.{{ FAKE_DOMAIN }}:5432 maxconn 100 check port 8008
-        server postgresql_pg03_5432 {{ HOST_NAME_PG03 }}.{{ FAKE_DOMAIN }}:5432 maxconn 100 check port 8008
+        server postgresql_pg01_5432 {{ HOST_NAME_PG01 }}.{{ FAKE_DOMAIN }}:5432 maxconn 2000 check port 8008
+        server postgresql_pg02_5432 {{ HOST_NAME_PG02 }}.{{ FAKE_DOMAIN }}:5432 maxconn 2000 check port 8008
+        server postgresql_pg03_5432 {{ HOST_NAME_PG03 }}.{{ FAKE_DOMAIN }}:5432 maxconn 2000 check port 8008
