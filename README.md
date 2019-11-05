@@ -83,6 +83,8 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/), Siege\
 
 ### ansible
 
+Для провижининга на хостовой машине требуется ansible >= 2.9, т.к. в модуле ```mount``` используется параметр ```state``` со значением ```remounted```.
+
 В плейбуках ansible используются переменные, которые описаны в файле [variables](provisioning/HA/variables). Если нужно изменить имя сервера, то кроме файла variables необходимо проверить файл [hosts](provisioning_proxmox/HA/hosts) или [hosts_vagrant](provisioning/HA/hosts_vagrant) (если используется vagrant) и play-файлы плейбуков на соответствие имён серверов.
 В play-файлах плейбуков учтено использование разных имён серверов из разных инвентори (hosts и hosts_vagrant).
 

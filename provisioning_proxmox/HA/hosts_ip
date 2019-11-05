@@ -13,8 +13,8 @@ hl-dcs03 ansible_user=otus ansible_host=10.51.21.63 ansible_port=22 ansible_priv
 
 [database]
 hl-pg01 ansible_user=otus ansible_host=10.51.21.65 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
-#hl-pg02 ansible_user=otus ansible_host=10.51.21.66 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
-#hl-pg03 ansible_user=otus ansible_host=10.51.21.67 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-pg02 ansible_user=otus ansible_host=10.51.21.66 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-pg03 ansible_user=otus ansible_host=10.51.21.67 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [database1]
 hl-pg01 ansible_user=otus ansible_host=10.51.21.65 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa

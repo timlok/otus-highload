@@ -1,0 +1,122 @@
+---
+- name: setting optimized postgresql parameters and restart the patroni current node
+  shell: |
+    patronictl -c /etc/patroni.yml edit-config \
+    --pg max_connections=200 \
+    --pg shared_buffers=128MB \
+    --pg effective_cache_size=384MB \
+    --pg maintenance_work_mem=32MB \
+    --pg checkpoint_completion_target=0.9 \
+    --pg wal_buffers=3932kB \
+    --pg default_statistics_target=100 \
+    --pg random_page_cost=4 \
+    --pg effective_io_concurrency=2 \
+    --pg work_mem=327kB \
+    --pg min_wal_size=2GB \
+    --pg max_wal_size=4GB \
+    --pg checkpoint_timeout=5min \
+    --pg synchronous_commit=off \
+    --pg wal_compression=on \
+    --force
+    sleep 5
+    patronictl -c /etc/patroni.yml restart {{ FAKE_DOMAIN }} {{ ansible_hostname }} --force
+  tags: patroni_edit-config
+
+- name: waiting until postgresql is up and running
+  wait_for:
+    port: 5432
+    host: "{{ ansible_hostname }}"
+    delay: 10
+    timeout: 120
+
+- name: patroni stop
+  systemd:
+    name: patroni
+    state: stopped
+
+- name: creates an entry "disabling transparent_hugepage on reboot" in the cron
+  cron:
+    name: "disabling transparent_hugepage on reboot"
+    special_time: reboot
+    job: "/usr/bin/echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+
+- name: creates an entry "disabling defrag transparent_hugepage on reboot" in the cron
+  cron:
+    name: "disabling defrag transparent_hugepage on reboot"
+    special_time: reboot
+    job: "/usr/bin/echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+
+- name: disabling transparent huge pages
+  shell: |
+    echo never > /sys/kernel/mm/transparent_hugepage/enabled
+    echo never > /sys/kernel/mm/transparent_hugepage/defrag
+
+- name: get uid postgres user
+  shell: id -u postgres
+  register: uid_postgres
+
+#- name: debug registered var
+#  debug: var=uid_postgres.stdout
+#- name: test shell for registered var
+#  shell: echo {{ uid_postgres.stdout }} > /tmp/testfie
+
+- name: get gid postgres user
+  shell: id -g postgres
+  register: gid_postgres
+
+- name: edit fstab - mounting the pg_stat_tmp directory in RAM
+  mount:
+    path: /var/lib/pgsql/11/data/pg_stat_tmp
+    src: tmpfs
+    fstype: tmpfs
+    opts: noatime,nodiratime,defaults,size=16M,mode=700,uid={{ uid_postgres.stdout }},gid={{ gid_postgres.stdout }}
+    state: mounted
+
+- name: edit fstab - add noatime mount option to root partition
+  lineinfile:
+    path: /etc/fstab
+    backup: yes
+    backrefs: yes
+    regexp: '^(UUID=[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}\s+\/\s+xfs\s+)(defaults)(\s+0\s+0)$'
+    #regexp: '^(\/dev\/mapper\/centos-root\s+\/\s+xfs\s+)(defaults)(\s+0\s+0)$'
+    line: '\1\2,noatime\3'
+  register: fstab
+  tags: update_fstab_to_pg0X
+
+#- name: if /etc/fstab changed, remount root partition
+#  shell: mount / -v -o remount
+#  when: fstab.changed
+#  tags: update_fstab_to_pg0X
+
+- name: if /etc/fstab changed, remount root partition
+  mount:
+    path: /
+    state: remounted
+  when: fstab.changed
+  tags: update_fstab_to_pg0X
+
+- name: create /etc/sysctl.d/30-postgresql.conf
+  file:
+    path: /etc/sysctl.d/30-postgresql.conf
+    owner: root
+    group: root
+    mode: '0644'
+    state: touch
+
+- name: edit /etc/sysctl.d/30-postgresql.conf
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/30-postgresql.conf
+    sysctl_set: yes
+    state: present
+    reload: yes
+  with_items:
+    - { key: "vm.nr_hugepages", value: "196" }
+    - { key: "vm.hugetlb_shm_group", value: "{{ gid_postgres.stdout }}" }
+    - { key: "kernel.sched_migration_cost_ns", value: "5000000" }
+
+- name: patroni start
+  systemd:
+    name: patroni
+    state: started
