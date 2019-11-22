@@ -1,9 +1,11 @@
 phantom:
+#  address: hl-balancer-vip.otus
   address: 10.51.21.50
+#  address: 10.51.21.57:8080
   uris:
     - "/zabbix/screens.php?elementid=23"
     - "/zabbix/screens.php?elementid=25"
-    - "/zabbix/screens.php?elementid=26"
+    - "/zabbix/screens.php?elementid=30"
 #    - "/zabbix/zabbix.php?action=dashboard.view&dashboardid=1"
 #    - "/zabbix/screens.php?elementid=23"
 #    - "/zabbix/screens.php?elementid=24"
@@ -11,18 +13,23 @@ phantom:
   ssl: false
   load_profile:
     load_type: rps
-    schedule: line(1, 60, 200s)
+#    schedule: line(1, 60, 200s)
+#    schedule: line(1, 125, 200s)
+    schedule: line(1, 200, 200s)
 #  ammofile: /var/loadtest/ammo_local.txt
 #  ammo_type: uripost
+autostop:
+  autostop:
+    - net(xx,25,10)
 console:
   enabled: true
 telegraf:
   enabled: false
-#  config: hl-zabbix02.xml
-#  enabled: true
-#  kill_old: true
-#  ssh_timeout: 15s
-#  package: yandextank.plugins.Telegraf
+  #config: hl-zabbix02.xml
+  #enabled: true
+  #kill_old: true
+  #ssh_timeout: 15s
+  #package: yandextank.plugins.Telegraf
 uploader:
 #  enabled: false
   enabled: true

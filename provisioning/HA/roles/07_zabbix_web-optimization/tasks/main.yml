@@ -28,13 +28,32 @@
 
 - name: copy override.conf (increase in the number of opened files php-fpm to 8192)
   copy:
-    scr: override.conf
+    scr: override_php-fpm.conf
     dest: /etc/systemd/system/php-fpm.service.d/override.conf
     owner: root
     group: root
     mode: '0644'
   notify:
     - php-fpm restart
+
+- name: editinig /etc/nginx/nginx.conf
+  shell: sed -i 's/worker_connections 1024;/worker_connections 16384;/g' /etc/nginx/nginx.conf
+
+- name: create directory for nginx.service override.conf
+  file:
+    path: /etc/systemd/system/nginx.service.d
+    state: directory
+    mode: '0755'
+
+- name: copy override.conf (increase in the number of opened files nginx to 16384)
+  copy:
+    scr: override_nginx.conf
+    dest: /etc/systemd/system/nginx.service.d/override.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - nginx restart
 
 - name: edit sysctl.conf
   sysctl:

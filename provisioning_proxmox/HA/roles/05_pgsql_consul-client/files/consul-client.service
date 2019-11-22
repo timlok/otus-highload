@@ -21,7 +21,7 @@ KillSignal=SIGINT
 TimeoutStopSec=5
 Restart=on-failure
 
-SyslogIdentifier=consul-client
+#SyslogIdentifier=consul-client
 
 [Install]
 WantedBy=multi-user.target
