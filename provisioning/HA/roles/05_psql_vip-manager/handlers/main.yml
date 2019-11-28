@@ -1,0 +1,6 @@
+---
+- name: vip-manager start and enable
+  systemd:
+    name: vip-manager
+    state: started
+    enabled: yes

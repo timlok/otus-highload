@@ -41,7 +41,7 @@ bootstrap:
                 - createdb
 
 postgresql:
-    listen: {{ ansible_eth1.ipv4.address }}:5432
+    listen: 0.0.0.0:5432
     bin_dir: /usr/pgsql-11/bin
     connect_address: {{ ansible_eth1.ipv4.address }}:5432
     data_dir: /var/lib/pgsql/11/data

@@ -172,8 +172,8 @@ Vagrant.configure("2") do |config|
 
         box.vm.provider "virtualbox" do |v|
           v.customize ["modifyvm", :id, "--audio", "none"]
-          #v.memory = "1024"
-          v.memory = "512"
+          v.memory = "768"
+          #v.memory = "512"
           v.cpus = "1"
         end
 
