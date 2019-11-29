@@ -111,6 +111,7 @@
     - { name: "{{ HOST_NAME_PG01 }}", ip: "{{ HOST_IP_PG01 }}" }
     - { name: "{{ HOST_NAME_PG02 }}", ip: "{{ HOST_IP_PG02 }}" }
     - { name: "{{ HOST_NAME_PG03 }}", ip: "{{ HOST_IP_PG03 }}" }
+    - { name: "{{ HOST_NAME_PG_VIP }}", ip: "{{ HOST_IP_PG_VIP }}" }
     - { name: "{{ HOST_NAME_DCS }}", ip: "{{ HOST_IP_DCS }}" }
     - { name: "{{ HOST_NAME_WEB_VIP }}", ip: "{{ HOST_IP_WEB_VIP }}" }
     - { name: "{{ HOST_NAME_WEB01 }}", ip: "{{ HOST_IP_WEB01 }}" }
