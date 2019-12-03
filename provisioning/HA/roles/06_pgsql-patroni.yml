@@ -1,0 +1,9 @@
+- name: 06_pgsql-patroni
+  hosts:
+    - database
+  become: true
+  roles:
+    - 06_pgsql-patroni/01_consul-client
+    - 06_pgsql-patroni/02_patroni-server
+    - 06_pgsql-patroni/03_pgsql_optimization
+    - 06_pgsql-patroni/04_vip-manager_install

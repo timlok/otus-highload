@@ -1,29 +1,29 @@
 global_defs {
 # Keepalived process identifier
-  router_id haproxy_DH_passive
+  router_id odyssey_DH_passive
 }
-# Script used to check if HAProxy is running
-vrrp_script check_haproxy {
-  script "/usr/bin/killall -0 haproxy"
+# Script used to check if odyssey is running
+vrrp_script check_odyssey {
+  script "/usr/bin/killall -0 odyssey"
   interval 2
   weight 2
 }
 # Virtual interface
 # The priority specifies the order in which the assigned interface to take over in a failover
-vrrp_instance balancer {
+vrrp_instance odyssey {
   state SLAVE
-  interface {{ IP_BALANCER_NIC }}
-  virtual_router_id 51
+  interface {{ IP_PG_CON_POOL_NIC }}
+  virtual_router_id 55
   priority 100
 # The virtual ip address shared between the two loadbalancers
   virtual_ipaddress {
-    {{ HOST_IP_BALANCER_VIP }}
+    {{ HOST_IP_PG_CON_POOL_VIP }}
   }
   track_script {
-    check_haproxy
+    check_odyssey
   }
   authentication {
     auth_type PASS
-    auth_pass {{ PASS_FOR_KEEPALIVED }}
+    auth_pass {{ PASS_FOR_PG_CON_POOL_KEEPALIVED }}
   }
 }

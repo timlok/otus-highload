@@ -1,0 +1,73 @@
+---
+- name: create rpmbuild directory
+  file:
+    path: /root/rpmbuild/SOURCES/
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: clone odyssey repo for rpm
+  git:
+    repo: https://github.com/yandex/odyssey.git
+    dest: /root/rpmbuild/SOURCES/odyssey
+
+- name: copy FindPostgreSQL.cmake for rpmbuild
+  copy:
+    src: FindPostgreSQL_rpmbuild.cmake
+    dest: /root/rpmbuild/SOURCES/odyssey/cmake/FindPostgreSQL.cmake
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: compress directory odyssey into odyssey.tar.gz
+  archive:
+    path: /root/rpmbuild/SOURCES/odyssey
+    dest: /root/rpmbuild/SOURCES/odyssey.tar.gz
+    format: gz
+    force_archive: true
+
+- name: dependency check and assembly rpm package odyssey
+  shell: |
+    yum-builddep /root/rpmbuild/SOURCES/odyssey/scripts/centos/odyssey.spec
+    rpmbuild -bb /root/rpmbuild/SOURCES/odyssey/scripts/centos/odyssey.spec
+
+- name: find odyssey rpm
+  find:
+    paths: /root/rpmbuild/RPMS/x86_64
+    recurse: yes
+    patterns: 'odyssey-[^debuginfo].*(\.el7\.x86_64\.rpm)'
+    use_regex: yes
+  register: odyssey_rpm
+
+#- name: debug registered var
+#  debug:
+#    var: odyssey_rpm
+#
+#- name: test shell for registered var
+#  shell: echo {{ odyssey_rpm.files }} > /tmp/testfie
+#
+#- name: copy test
+#  copy:
+#    src: "{{ item.path }}"
+#    dest: /tmp
+#    remote_src: yes
+#  with_items:
+#    "{{ odyssey_rpm.files }}"
+
+- name: copy rpm-file to the repo directory
+  copy:
+    src: "{{ item.path }}"
+    dest: /usr/share/nginx/html/repo
+    remote_src: yes
+  with_items:
+    "{{ odyssey_rpm.files }}"
+
+- name: createrepo otus-odyssey-vip-manager
+  shell: createrepo /usr/share/nginx/html/repo/
+
+- name: nginx restart
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

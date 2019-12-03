@@ -1,0 +1,86 @@
+---
+- name: edit /etc/hosts (comment line)
+  replace:
+    path: "{{ HOSTS_FILE }}"
+    regexp: '(^(127\.0\.0\.1)(\s*|\t*)(hl-[a-zA-Z]*[0-9]*)(\s*|\t*)(hl-[a-zA-Z]*[0-9]*)(\s*|\t*)$)'
+    replace: '#\1'
+  tags:
+    - update_hosts
+
+- name: install jq
+  yum:
+    name: jq
+    state: latest
+
+- name: download consul
+  get_url:
+    url: https://releases.hashicorp.com/consul/{{ CONSUL_VERSION }}/consul_{{ CONSUL_VERSION }}_linux_amd64.zip
+    dest: /tmp/consul_{{ CONSUL_VERSION }}_linux_amd64.zip
+    mode: '0600'
+
+- name: extract consul zip-archive
+  unarchive:
+    remote_src: yes
+    src: /tmp/consul_{{ CONSUL_VERSION }}_linux_amd64.zip
+    dest: /usr/local/bin/
+
+- name: create system group "consul"
+  group:
+    name: consul
+    system: yes
+    state: present
+
+- name: add system user "consul"
+  user:
+    name: consul
+    group: consul
+    shell: /sbin/nologin
+    home: /var/lib/consul
+    system: yes
+
+- name: set permissions for consul data directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: consul
+    group: consul
+    mode: '0775'
+  with_items:
+      - /var/lib/consul
+      - /etc/consul.d
+
+#- name: create directory for consul config files
+#  file:
+#    path: /etc/consul.d
+#    state: directory
+#    owner: consul
+#    group: consul
+#    mode: '0775'
+
+- name: copy consul-client.service
+  copy:
+    src: consul-client.service
+    dest: /etc/systemd/system/consul-client.service
+    owner: root
+    group: root
+    mode: '0644'
+
+#generate encryption key that will be used ad the "encrypt" entry of ALL CONSUL NODES
+#CONSUL_KEY=$(consul keygen); echo $CONSUL_KEY
+#sgIjP/24ugFcKfJ5DJ1Ob29dB5jgzwZbXY0lED3RM9w=
+#see ansible variable CONSUL_KEY
+
+- name: put bootstrap consul configuration template
+  template:
+    src: consul-client.json.j2
+    dest: /etc/consul.d/consul-client.json
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: consul-client restarted
+  systemd:
+    daemon_reload: yes
+    name: consul-client
+    state: restarted
+    enabled: yes

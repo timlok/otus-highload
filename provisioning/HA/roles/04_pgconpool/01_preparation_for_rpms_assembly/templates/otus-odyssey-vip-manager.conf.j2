@@ -1,0 +1,15 @@
+server  {
+        listen 8081;
+        #server_name {{ HOST_NAME_WEB_VIP }}.{{ FAKE_DOMAIN }};
+#        return 301 https://$server_name$request_uri;  # enforce https
+
+access_log /var/log/nginx/otus-odyssey-vip-manager.access.log;
+error_log /var/log/nginx/otus-odyssey-vip-manager.error.log;
+
+location / {
+        root /usr/share/nginx/html;
+#        index index.php index.html index.htm;
+        autoindex on;
+        }
+
+}

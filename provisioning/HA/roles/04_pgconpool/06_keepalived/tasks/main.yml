@@ -1,0 +1,58 @@
+---
+- name: install keepalived
+  yum:
+    name:
+      - keepalived
+    state: latest
+
+- name: edit sysctl.conf
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  with_items:
+    - { key: "net.core.rmem_max", value: "16777216" }
+    - { key: "net.ipv4.tcp_rmem", value: "4096 87380 16777216" }
+    - { key: "net.core.wmem_max", value: "16777216" }
+    - { key: "net.ipv4.tcp_wmem", value: "4096 16384 16777216" }
+    - { key: "net.ipv4.tcp_fin_timeout", value: "20" }
+    - { key: "net.ipv4.tcp_tw_reuse", value: "1" }
+    - { key: "net.core.netdev_max_backlog", value: "10000" }
+    - { key: "net.ipv4.ip_local_port_range", value: "15000 65001" }
+    - { key: "net.ipv4.ip_nonlocal_bind", value: "1" }
+    - { key: "net.ipv4.ip_forward", value: "1" }
+    - { key: "net.ipv4.conf.all.forwarding", value: "1" }
+
+- name: copy keepalived.service
+  copy:
+    src: keepalived.service
+    dest: /usr/lib/systemd/system/keepalived.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: put keepalived.conf template to master
+  template:
+    src: master_keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - keepalived restart
+  when: "ansible_facts['hostname'] == HOST_NAME_PG_CON_POOL_01|string"
+  #when: ansible_facts['hostname'] == "{{ HOST_NAME_PG_CON_POOL_01 }}"
+
+- name: put keepalived.conf template to slave
+  template:
+    src: slave_keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - keepalived restart
+  when: "ansible_facts['hostname'] == HOST_NAME_PG_CON_POOL_02|string"
+  #when: ansible_facts['hostname'] == "{{ HOST_NAME_PG_CON_POOL_02 }}"

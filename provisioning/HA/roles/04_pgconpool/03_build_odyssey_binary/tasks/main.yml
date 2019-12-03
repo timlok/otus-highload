@@ -1,0 +1,36 @@
+---
+- name: clone odyssey repo
+  git:
+    repo: https://github.com/yandex/odyssey.git
+    dest: /root/odyssey
+
+- name: copy FindPostgreSQL.cmake
+  copy:
+    src: FindPostgreSQL.cmake
+    dest: /root/odyssey/cmake/FindPostgreSQL.cmake
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: copy postgres.h
+  copy:
+    src: postgres.h
+    dest: /root/odyssey/sources/postgres.h
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: create build directory
+  file:
+    path: /root/odyssey/build
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: generating a Makefile for assembling the odyssey binary
+  shell: cd /root/odyssey/build && cmake -DCMAKE_BUILD_TYPE=Release ..
+
+- name: assembly odyssey binary file
+  make:
+    chdir: /root/odyssey/build

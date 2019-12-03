@@ -16,6 +16,11 @@ PASS_FOR_WEB_GUI_ZABBIX: 'zabbix'
 PASS_POSTGRES_FOR_DB: 'gfhjkm'
 NET_POSTGRES_ALLOW: '10.51.21.0/24'
 
+#odyssey-keepalived
+PASS_ODYSSEY_USER: 'odyssey'
+IP_PG_CON_POOL_NIC: 'eth1'
+PASS_FOR_PG_CON_POOL_KEEPALIVED: 'och4Ohc8kaequej6'
+
 #pacemaker
 PASS_HACLUSTER_USER: 'Ozae2doipi1Nahzi'
 IP_ZAB_CLUSTER_NIC: 'eth1'
@@ -35,34 +40,23 @@ CONSUL_DATACENTER: 'HL-OTUS'
 FAKE_DOMAIN: 'otus'
 
 ########## хосты ##########
+HOST_NAME_BALANCER_VIP: 'hl-balancer-vip'
+HOST_IP_BALANCER_VIP: '10.51.21.50'
+
 HOST_NAME_BALANCER_01: 'hl-balancer01'
 HOST_IP_BALANCER_01: '10.51.21.51'
 
 HOST_NAME_BALANCER_02: 'hl-balancer02'
 HOST_IP_BALANCER_02: '10.51.21.52'
 
-HOST_NAME_BALANCER_VIP: 'hl-balancer-vip'
-HOST_IP_BALANCER_VIP: '10.51.21.50'
+HOST_NAME_PG_CON_POOL_VIP: 'hl-pg-conpool-vip'
+HOST_IP_PG_CON_POOL_VIP: '10.51.21.53'
 
-HOST_NAME_HL_CLIENT: 'hl-client'
-HOST_IP_HL_CLIENT: '10.51.21.70'
+HOST_NAME_PG_CON_POOL_01: 'hl-pg-conpool01'
+HOST_IP_PG_CON_POOL_01: '10.51.21.54'
 
-#HOST_NAME_HA_VIP: 'hl-haproxy-vip'
-#HOST_IP_HA_VIP: '10.51.21.50'
-
-#HOST_NAME_HA_01: 'hl-haproxy01'
-#HOST_IP_HA_01: '10.51.21.51'
-
-#HOST_NAME_HA_02: 'hl-haproxy02'
-#HOST_IP_HA_02: '10.51.21.52'
-
-#HOST_NAME_MQ_01: 'hl-mq01'
-#HOST_IP_MQ_01: '10.51.21.53'
-
-#HOST_NAME_MQ_02: 'hl-mq02'
-#HOST_IP_MQ_02: '10.51.21.54'
-
-#свободен 10.51.21.55
+HOST_NAME_PG_CON_POOL_02: 'hl-pg-conpool02'
+HOST_IP_PG_CON_POOL_02: '10.51.21.55'
 
 HOST_NAME_WEB_VIP: 'hl-zabbix-vip'
 HOST_IP_WEB_VIP: '10.51.21.56'
@@ -75,26 +69,15 @@ HOST_IP_WEB02: '10.51.21.58'
 
 
 ##### временно #############################################
-HOST_NAME_PG_HAPROXY: 'hl-pg-haproxy'
-HOST_IP_PG_HAPROXY: '10.51.21.59'
-
+#HOST_NAME_PG_HAPROXY: 'hl-pg-haproxy'
+#HOST_IP_PG_HAPROXY: '10.51.21.59'
+#
 #только для работы в vagrant и при использовании haproxy в качестве точки входа в БД
-HOST_NAME_PG_CON_POOL_VIP: '{{ HOST_NAME_PG_HAPROXY }}'
-HOST_IP_PG_CON_POOL_VIP: '{{ HOST_IP_PG_HAPROXY }}'
+#HOST_NAME_PG_CON_POOL_VIP: '{{ HOST_NAME_PG_HAPROXY }}'
+#HOST_IP_PG_CON_POOL_VIP: '{{ HOST_IP_PG_HAPROXY }}'
 ############################################################
 
-#раскомментировать при использовании серверов bgbouncer/consul и закомментировать аналогичные переменные выше
-#HOST_NAME_PG_CON_POOL_VIP: 'hl-pg-conpool-vip'
-#HOST_IP_PG_CON_POOL_VIP: '10.51.21.60'
-
-HOST_NAME_PG_CON_POOL_01: 'hl-pg-conpool01'
-HOST_IP_PG_CON_POOL_01: '10.51.21.61'
-
-HOST_NAME_PG_CON_POOL_02: 'hl-pg-conpool02'
-HOST_IP_PG_CON_POOL_02: '10.51.21.62'
-
-HOST_NAME_PG_CON_POOL_03: 'hl-pg-conpool03'
-HOST_IP_PG_CON_POOL_03: '10.51.21.63'
+#свободен 10.51.21.60
 
 HOST_NAME_DCS_01: 'hl-dcs01'
 HOST_IP_DCS_01: '10.51.21.61'
@@ -106,8 +89,8 @@ HOST_NAME_DCS_03: 'hl-dcs03'
 HOST_IP_DCS_03: '10.51.21.63'
 
 #временный
-HOST_NAME_DCS: 'hl-etcd'
-HOST_IP_DCS: '10.51.21.64'
+#HOST_NAME_DCS: 'hl-etcd'
+#HOST_IP_DCS: '10.51.21.64'
 
 HOST_NAME_PG01: 'hl-pg01'
 HOST_IP_PG01: '10.51.21.65'
@@ -121,3 +104,8 @@ HOST_IP_PG03: '10.51.21.67'
 HOST_NAME_PG_VIP: 'hl-pg-vip'
 HOST_IP_PG_VIP: '10.51.21.68'
 IP_VIPMANAGER_NIC: 'eth1'
+
+#свободен 10.51.21.69
+
+HOST_NAME_HL_CLIENT: 'hl-client'
+HOST_IP_HL_CLIENT: '10.51.21.70'

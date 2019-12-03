@@ -15,10 +15,22 @@ MACHINES = {
                {ip: '10.51.21.52', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :HLpgHaproxy => {
+#  :HLpgHaproxy => {
+#    :box_name => "centos/7",
+#    :net => [
+#               {ip: '10.51.21.59', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+#            ]
+#  },
+  :HLpgConpool01 => {
     :box_name => "centos/7",
     :net => [
-               {ip: '10.51.21.59', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+               {ip: '10.51.21.54', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+            ]
+  },
+  :HLpgConpool02 => {
+    :box_name => "centos/7",
+    :net => [
+               {ip: '10.51.21.55', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
   :HLdcs01 => {
@@ -39,12 +51,12 @@ MACHINES = {
                {ip: '10.51.21.63', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-  :HLetcd => {
-    :box_name => "centos/7",
-    :net => [
-               {ip: '10.51.21.64', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
-            ]
-  },
+#  :HLetcd => {
+#    :box_name => "centos/7",
+#    :net => [
+#               {ip: '10.51.21.64', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
+#            ]
+#  },
   :HLpg01 => {
     :box_name => "centos/7",
     :net => [
@@ -100,12 +112,22 @@ Vagrant.configure("2") do |config|
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2241, id: "ssh", host_ip: '127.0.0.1'
     c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
-  config.vm.define "HLpgHaproxy" do |c|
-    c.vm.hostname = "hl-pg-haproxy"
-    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2321, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "forwarded_port", adapter: 1, guest: 5000, host: 5000, host_ip: '127.0.0.1'
-    c.vm.network "forwarded_port", adapter: 1, guest: 7000, host: 7000, host_ip: '127.0.0.1'
-    #c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+#  config.vm.define "HLpgHaproxy" do |c|
+#    c.vm.hostname = "hl-pg-haproxy"
+#    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2321, id: "ssh", host_ip: '127.0.0.1'
+#    c.vm.network "forwarded_port", adapter: 1, guest: 5000, host: 5000, host_ip: '127.0.0.1'
+#    c.vm.network "forwarded_port", adapter: 1, guest: 7000, host: 7000, host_ip: '127.0.0.1'
+#    #c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+#  end
+  config.vm.define "HLpgConpool01" do |c|
+    c.vm.hostname = "hl-pg-conpool01"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2233, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+  end
+  config.vm.define "HLpgConpool02" do |c|
+    c.vm.hostname = "hl-pg-conpool02"
+    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2234, id: "ssh", host_ip: '127.0.0.1'
+    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
   config.vm.define "HLdcs01" do |c|
     c.vm.hostname = "hl-dcs01"
@@ -122,10 +144,10 @@ Vagrant.configure("2") do |config|
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2253, id: "ssh", host_ip: '127.0.0.1'
     c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
-  config.vm.define "HLetcd" do |c|
-    c.vm.hostname = "hl-etcd"
-    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2421, id: "ssh", host_ip: '127.0.0.1'
-  end
+#  config.vm.define "HLetcd" do |c|
+#    c.vm.hostname = "hl-etcd"
+#    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2421, id: "ssh", host_ip: '127.0.0.1'
+#  end
   config.vm.define "HLpg01" do |c|
     c.vm.hostname = "hl-pg01"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2521, id: "ssh", host_ip: '127.0.0.1'
@@ -172,8 +194,9 @@ Vagrant.configure("2") do |config|
 
         box.vm.provider "virtualbox" do |v|
           v.customize ["modifyvm", :id, "--audio", "none"]
-          v.memory = "768"
           #v.memory = "512"
+          v.memory = "768"
+          #v.memory = "1024"
           v.cpus = "1"
         end
 

@@ -1,0 +1,17 @@
+- name: 04_pgconpool_build_packages
+  hosts:
+    - pg_conpool1
+  become: true
+  roles:
+    - 04_pgconpool/01_preparation_for_rpms_assembly
+    - 04_pgconpool/02_build_vip-manager_rpm
+    #- 04_pgconpool/03_build_odyssey_binary
+    - 04_pgconpool/04_build_odyssey_rpm
+
+- name: 04_pgconpool_install_odyssey
+  hosts:
+    - pg_conpool
+  become: true
+  roles:
+    - 04_pgconpool/05_install_odyssey
+    - 04_pgconpool/06_keepalived

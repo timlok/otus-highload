@@ -1,0 +1,25 @@
+---
+- name: add otus-odyssey-vip-manager repository
+  yum_repository:
+    name: otus-odyssey-vip-manager
+    description: Repository with odyssey and vip-manager rpm packages
+    baseurl:
+      - http://"{{ HOST_NAME_PG_CON_POOL_01 }}"."{{ FAKE_DOMAIN }}":8081/repo
+      - http://"{{ HOST_IP_PG_CON_POOL_01 }}":8081/repo
+    gpgcheck: no
+    enabled: yes
+
+- name: install odyssey from repo
+  yum:
+    name: odyssey
+    state: latest
+
+- name: put odyssey.conf template
+  template:
+    src: odyssey.conf.j2
+    dest: /etc/odyssey/odyssey.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - odyssey restart

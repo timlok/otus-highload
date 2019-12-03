@@ -1,0 +1,33 @@
+---
+- name: add otus-odyssey-vip-manager repository
+  yum_repository:
+    name: otus-odyssey-vip-manager
+    description: Repository with odyssey and vip-manager rpm packages
+    baseurl:
+      - http://"{{ HOST_NAME_PG_CON_POOL_01 }}"."{{ FAKE_DOMAIN }}":8081/repo
+      - http://"{{ HOST_IP_PG_CON_POOL_01 }}":8081/repo
+    gpgcheck: no
+    enabled: yes
+
+- name: install vip-manager from repo
+  yum:
+    name: vip-manager
+    state: latest
+
+- name: copy vip-manager.service
+  copy:
+    src: vip-manager.service
+    dest: /usr/lib/systemd/system/vip-manager.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: put vip-manager.yml template
+  template:
+    src: vip-manager.yml.j2
+    dest: /etc/default/vip-manager.yml
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - vip-manager start and enable
