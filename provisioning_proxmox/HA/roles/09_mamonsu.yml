@@ -1,0 +1,20 @@
+- name: 09_mamonsu_build_and_create_repo
+  hosts:
+    - web2
+  become: true
+  roles:
+    - 09_mamonsu/01_mamonsu_build_and_create_repo
+
+- name: 09_mamonsu_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 09_mamonsu/02_mamonsu_install
+
+- name: 09_mamonsu_zabbix-postgres
+  hosts:
+    - web1
+  become: true
+  roles:
+    - 09_mamonsu/03_mamonsu_zabbix-postgres

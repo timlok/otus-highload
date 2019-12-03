@@ -3,7 +3,12 @@ hl-balancer01 ansible_user=otus ansible_host=10.51.21.51 ansible_port=22 ansible
 hl-balancer02 ansible_user=otus ansible_host=10.51.21.52 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [pg_conpool]
-hl-pg-haproxy ansible_user=otus ansible_host=10.51.21.59 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+#hl-pg-haproxy ansible_user=otus ansible_host=10.51.21.59 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-pg-conpool01 ansible_user=otus ansible_host=10.51.21.54 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+hl-pg-conpool02 ansible_user=otus ansible_host=10.51.21.55 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+
+[pg_conpool1]
+hl-pg-conpool01 ansible_user=otus ansible_host=10.51.21.54 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [dcs]
 #hl-etcd ansible_user=otus ansible_host=10.51.21.64 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
@@ -29,9 +34,9 @@ hl-zabbix01 ansible_user=otus ansible_host=10.51.21.57 ansible_port=22 ansible_p
 [web2]
 hl-zabbix02 ansible_user=otus ansible_host=10.51.21.58 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
-[pg_conpool_dcs]
-hl-pg-haproxy ansible_user=otus ansible_host=10.51.21.59 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
-hl-etcd ansible_user=otus ansible_host=10.51.21.64 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+#[pg_conpool_dcs]
+#hl-pg-haproxy ansible_user=otus ansible_host=10.51.21.59 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
+#hl-etcd ansible_user=otus ansible_host=10.51.21.64 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa
 
 [client]
 hl-client ansible_user=otus ansible_host=10.51.21.70 ansible_port=22 ansible_private_key_file=/home/timur/.ssh/id_rsa

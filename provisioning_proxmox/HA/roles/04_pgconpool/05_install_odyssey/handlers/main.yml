@@ -1,0 +1,6 @@
+---
+- name: odyssey restart
+  systemd:
+    name: odyssey
+    state: restarted
+    enabled: yes

@@ -1,0 +1,167 @@
+###
+### SERVICE
+###
+
+#daemonize no
+#priority -10
+# pid_file "/var/run/odyssey.pid"
+
+unix_socket_dir "/tmp"
+unix_socket_mode "0644"
+
+###
+### LOGGING
+###
+
+#log_file "/var/log/odyssey.log"
+
+log_format "%p %t %l [%i %s] [user - %u, db - %d] (%c) %m\n"
+log_config yes
+#log_debug yes
+#log_session yes
+#log_query yes
+#log_stats yes
+log_debug no
+log_session no
+log_query no
+log_stats no
+
+#stats_interval 60
+stats_interval 300
+
+###
+### PERFORMANCE
+###
+
+#workers 1
+#resolvers 1
+readahead 8192
+cache_coroutine 210
+
+nodelay yes
+keepalive 7200
+
+###
+### GLOBAL LIMITS
+###
+
+#client_max 2000
+client_max_routing 32
+
+###
+### LISTEN
+###
+
+listen {
+    tls "disable"
+    host "*"
+#    port 6432
+    port 5000
+}
+
+###
+### ROUTING
+###
+
+storage "local" {
+    type "local"
+    #tls "disable"
+}
+
+database "console" {
+    user "odyssey" {
+        #authentication "none"
+        authentication "md5"
+        password "{{ PASS_ODYSSEY_USER }}"
+        pool "session"
+        storage "local"
+    }
+}
+
+storage "postgres_server" {
+    type "remote"
+    tls "disable"
+    host "{{ HOST_NAME_PG_VIP }}.{{ FAKE_DOMAIN }}"
+    port 5432
+}
+
+database "postgres" {
+    user "postgres" {
+        authentication "md5"
+        password "{{ PASS_POSTGRES_FOR_DB }}"
+        storage "postgres_server"
+        storage_user "postgres"
+        storage_password "{{ PASS_POSTGRES_FOR_DB }}"
+        pool "session"
+        client_max 4
+        pool_size 0
+        pool_timeout 0
+        pool_ttl 60
+        pool_cancel yes
+        pool_discard yes
+        pool_rollback yes
+        client_fwd_error yes
+        log_debug no
+    }
+}
+
+database "template1" {
+    user "postgres" {
+        authentication "md5"
+        password "{{ PASS_POSTGRES_FOR_DB }}"
+        storage "postgres_server"
+        storage_user "postgres"
+        storage_password "{{ PASS_POSTGRES_FOR_DB }}"
+        pool "session"
+        client_max 4
+        pool_size 0
+        pool_timeout 0
+        pool_ttl 60
+        pool_cancel yes
+        pool_discard yes
+        pool_rollback yes
+        client_fwd_error yes
+        log_debug no
+    }
+}
+
+database "zabbix" {
+    user "postgres" {
+        authentication "md5"
+        password "{{ PASS_POSTGRES_FOR_DB }}"
+        storage "postgres_server"
+        storage_user "postgres"
+        storage_db "postgres"
+        storage_password "{{ PASS_POSTGRES_FOR_DB }}"
+        pool "session"
+        client_max 10
+        pool_size 0
+        pool_timeout 0
+        pool_ttl 60
+        pool_cancel yes
+        #pool_discard no
+        pool_discard yes
+        pool_rollback yes
+        client_fwd_error yes
+        log_debug no
+    }
+    user "zabbix" {
+        authentication "md5"
+        password "{{ PASS_ZAB_FOR_DB }}"
+        storage "postgres_server"
+        storage_user "zabbix"
+        storage_password "{{ PASS_ZAB_FOR_DB }}"
+        #pool "transaction"
+        pool "session"
+        client_max 2000
+        pool_size 187
+        pool_timeout 0
+        pool_ttl 60
+        pool_cancel yes
+        #pool_discard no
+        pool_discard yes
+        pool_rollback yes
+        client_fwd_error yes
+        log_debug no
+    }
+}

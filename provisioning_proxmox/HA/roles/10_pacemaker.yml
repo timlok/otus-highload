@@ -1,0 +1,13 @@
+- name: 10_pacemaker_install
+  hosts:
+    - web
+  become: true
+  roles:
+    - 10_pacemaker/01_pacemaker_install
+
+- name: 10_pacemaker_create_cluster
+  hosts:
+    - web1
+  become: true
+  roles:
+    - 10_pacemaker/02_pacemaker_create_cluster

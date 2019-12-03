@@ -47,11 +47,7 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/), Siege\
 
 ## Схема проекта
 
-текущая схема проекта
 ![scheme_current.png](scheme/scheme_current.png)
-
-целевая схема проекта, примерно, такая:
-![scheme_target.png](scheme/scheme_target.png)
 
 ## Текущие задачи
 
@@ -59,10 +55,10 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/), Siege\
 - [x] настроить мониторинг postgresql в zabbix
 - [x] повторить с теми же параметрами нагрузочный http-тест с уже оптимизированным web, зафиксировать результаты нагрузки на сервера БД с помощью показаний zabbix
 - [x] написать роли для оптимизации БД-серверов
-- [ ] развернуть pgbouncer в отказоустойчивой конфигурации (HA), соответственно, переосмыслить и изменить схему взаимодействия серверов web, БД, DCS
-- [ ] настроить [vip-manager](https://github.com/cybertec-postgresql/vip-manager) (VRRP+DCS) для управления VIP-адресом кластера patroni
-- [ ] заменить ```web > haproxy > postgresql``` на ```web > odyssey/pgbouncer > vip-mamager + patroni```
-- [ ] опять провести тест и записать результат
+- [x] развернуть pgbouncer в отказоустойчивой конфигурации (HA), соответственно, переосмыслить и изменить схему взаимодействия серверов web, БД, DCS
+- [x] настроить [vip-manager](https://github.com/cybertec-postgresql/vip-manager) (VRRP+DCS) для управления VIP-адресом кластера patroni
+- [x] заменить ```web > haproxy > postgresql``` на ```web > odyssey/pgbouncer > vip-mamager + patroni```
+- [x] опять провести тест и записать результат
 - [x] вместо pgbouncer развернуть pgpool-ll?
 - [x] оптимизировать настройки postgresql (в т.ч. буферы) и sysctl.conf
 - [x] провести тест, записать результат, сравнить с предыдущими результатами

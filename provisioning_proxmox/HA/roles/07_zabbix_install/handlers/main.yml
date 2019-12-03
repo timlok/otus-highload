@@ -1,6 +1,0 @@
----
-- name: zabbix-server stopped
-  systemd:
-    name: zabbix-server
-    state: stopped
-    enabled: no

@@ -1,0 +1,6 @@
+- name: 07_pgsql-client
+  hosts:
+    - web
+  become: true
+  roles:
+    - 07_pgsql-client

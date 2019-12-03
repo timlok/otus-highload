@@ -1,0 +1,75 @@
+---
+- name: install fpm with gem
+  gem:
+    name: fpm
+    user_install: no
+    state: latest
+
+- name: install ffi version 1.11.2 with gem
+  gem:
+    name: ffi
+    version: 1.11.2
+    user_install: no
+    state: present
+
+- name: create a symbolic link for fpm
+  file:
+    src: /usr/local/bin/fpm
+    dest: /usr/sbin/fpm
+    owner: root
+    group: root
+    state: link
+
+- name: create go directory in home root user
+  file:
+    path: /root/go
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: modify .bash_profile
+  blockinfile:
+    dest: /root/.bash_profile
+    block: |
+      export GOPATH=$HOME/go
+#      export GOBIN=$GOPATH/bin
+#      export PATH=$GOBIN:$PATH:/root/go/bin
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - changes for golang"
+    insertafter: EOF
+    create: yes
+
+- name: download vip-manager
+  shell: go get github.com/cybertec-postgresql/vip-manager
+#  environment:
+#    GOPATH: $HOME/go
+
+- name: assembly of the rpm package vip-manager
+  make:
+    chdir: /root/go/src/github.com/cybertec-postgresql/vip-manager
+    target: package-rpm
+
+- name: find vip-manager rpm
+  find:
+    paths: /root/go/src/github.com/cybertec-postgresql/vip-manager
+    recurse: yes
+    patterns: 'vip-manager[-_][^debug].*(.rpm)'
+    use_regex: yes
+  register: vip_manager_rpm
+
+- name: copy rpm-file to the repo directory
+  copy:
+    src: "{{ item.path }}"
+    dest: /usr/share/nginx/html/repo
+    remote_src: yes
+  with_items:
+    "{{ vip_manager_rpm.files }}"
+
+- name: createrepo otus-odyssey-vip-manager
+  shell: createrepo /usr/share/nginx/html/repo/
+
+- name: nginx restart
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

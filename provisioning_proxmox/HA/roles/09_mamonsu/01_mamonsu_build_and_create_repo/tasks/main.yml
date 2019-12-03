@@ -1,0 +1,61 @@
+---
+- name: install required packages
+  yum:
+    name:
+      - git
+      - make
+      - rpm-build
+      - python2-devel
+      - python-setuptools
+      - redhat-lsb-core
+      - rpmdevtools
+      - rpm-build
+      - createrepo
+      - yum-utils
+    state: latest
+
+- name: clone mamonsu repo
+  git:
+    repo: https://github.com/postgrespro/mamonsu.git
+    dest: /root/mamonsu
+
+- name: assembly of the rpm package mamonsu
+  make:
+    chdir: /root/mamonsu
+    target: rpm
+
+#- name: clone repo and assembly of the rpm package mamonsu
+#  shell: |
+#    cd /root && \
+#    git clone https://github.com/postgrespro/mamonsu.git && \
+#    cd mamonsu && \
+#    make rpm
+
+- name: create directory for rpm mamonsu repository
+  file:
+    path: /usr/share/nginx/html/repo
+    state: directory
+    mode: '0755'
+
+- name: copy rpm-file to the repo directory
+  copy:
+    src: /root/mamonsu/mamonsu-2.4.1-1.el7.noarch.rpm
+    dest: /usr/share/nginx/html/repo/mamonsu-2.4.1-1.el7.noarch.rpm
+    remote_src: yes
+
+- name: put template mamonsu.conf for nginx
+  template:
+    src: mamonsu.conf.j2
+    dest: /etc/nginx/conf.d/mamonsu.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: createrepo mamonsu
+  shell: createrepo /usr/share/nginx/html/repo/
+
+- name: nginx restart
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

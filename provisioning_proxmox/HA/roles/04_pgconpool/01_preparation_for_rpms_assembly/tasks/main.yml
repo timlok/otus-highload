@@ -1,0 +1,48 @@
+---
+- name: import postgresql repo a key from a url
+  rpm_key:
+    key: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG-11
+    state: present
+
+- name: install postgresql vanila repo
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: installed
+
+- name: install required packages
+  yum:
+    name:
+      - nginx
+      - wget
+      - git
+      - make
+      - rpm-build
+      - python2-devel
+      - python-setuptools
+      - redhat-lsb-core
+      - rpmdevtools
+      - createrepo
+      - yum-utils
+      - cmake
+      - gcc
+      - openssl
+      - openssl-devel
+      - postgresql11-devel
+      - golang
+      - ruby-devel
+      - rubygems
+    state: latest
+
+- name: create directory for rpm otus-odyssey-vip-manager repository
+  file:
+    path: /usr/share/nginx/html/repo
+    state: directory
+    mode: '0755'
+
+- name: put template otus-odyssey-vip-manager.conf for nginx
+  template:
+    src: otus-odyssey-vip-manager.conf.j2
+    dest: /etc/nginx/conf.d/otus-odyssey-vip-manager.conf
+    owner: root
+    group: root
+    mode: '0644'
