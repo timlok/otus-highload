@@ -63,21 +63,14 @@
 
 ########## При работе через odyssey пользователь postgres
 ########## не имеет доступа к схеме public чужой БД.
-########## Поэтому здесь обращаемся на VIP-адрес кластера patroni,
-########## а не на VIP-адрес odyssey.
+########## Поэтому здесь выполянем запрос от имени пользователя zabbix,
+########## а не пользователя postgres
 ########## Написал разработчикам issue.
-#- name: setting a password for the Admin user (real username "Zabbix") to access the web interface
-#  postgresql_query:
-#    login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
-#    login_user: postgres
-#    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
-#    port: "{{ PORT_FOR_DB_CLIENT }}"
-#    db: zabbix
-#    query: update users set passwd=md5('{{ PASS_FOR_WEB_GUI_ZABBIX }}') where alias='Admin'
-
 - name: setting a password for the Admin user (real username "Zabbix") to access the web interface
   postgresql_query:
     login_host: "{{ HOST_NAME_PG_CON_POOL_VIP }}.{{ FAKE_DOMAIN }}"
+#    login_user: postgres
+#    login_password: "{{ PASS_POSTGRES_FOR_DB }}"
     login_user: zabbix
     login_password: "{{ PASS_ZAB_FOR_DB }}"
     port: "{{ PORT_FOR_DB_CLIENT }}"

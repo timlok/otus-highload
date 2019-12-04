@@ -2,7 +2,7 @@
 - name: install epel
   yum:
     name:
-    - epel-release
+      - epel-release
 
 - name: install packages
   yum:
@@ -40,7 +40,7 @@
   notify:
     - chronyd start and enable
 
-- name: copy .screenrc
+- name: copy .screenrc to root user
   copy:
     src: screenrc
     dest: /root/.screenrc

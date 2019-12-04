@@ -53,8 +53,6 @@
 
 - name: createrepo mamonsu
   shell: createrepo /usr/share/nginx/html/repo/
-#  notify:
-#    - nginx restart
 
 - name: nginx restart
   systemd:
