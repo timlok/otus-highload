@@ -15,12 +15,6 @@ MACHINES = {
                {ip: '10.51.21.52', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-#  :HLpgHaproxy => {
-#    :box_name => "centos/7",
-#    :net => [
-#               {ip: '10.51.21.59', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
-#            ]
-#  },
   :HLpgConpool01 => {
     :box_name => "centos/7",
     :net => [
@@ -51,12 +45,6 @@ MACHINES = {
                {ip: '10.51.21.63', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
             ]
   },
-#  :HLetcd => {
-#    :box_name => "centos/7",
-#    :net => [
-#               {ip: '10.51.21.64', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "pgsql-net"},
-#            ]
-#  },
   :HLpg01 => {
     :box_name => "centos/7",
     :net => [
@@ -100,54 +88,40 @@ Vagrant.configure("2") do |config|
   config.vm.define "HLclient" do |c|
     c.vm.hostname = "hl-client"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2232, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
   config.vm.define "HLbalancer01" do |c|
     c.vm.hostname = "hl-balancer01"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2231, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+    c.vm.network "forwarded_port", adapter: 1, guest: 8080, host: 4001, host_ip: '127.0.0.1'
   end
   config.vm.define "HLbalancer02" do |c|
     c.vm.hostname = "hl-balancer02"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2241, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+    c.vm.network "forwarded_port", adapter: 1, guest: 8080, host: 4002, host_ip: '127.0.0.1'
   end
-#  config.vm.define "HLpgHaproxy" do |c|
-#    c.vm.hostname = "hl-pg-haproxy"
-#    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2321, id: "ssh", host_ip: '127.0.0.1'
-#    c.vm.network "forwarded_port", adapter: 1, guest: 5000, host: 5000, host_ip: '127.0.0.1'
-#    c.vm.network "forwarded_port", adapter: 1, guest: 7000, host: 7000, host_ip: '127.0.0.1'
-#    #c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
-#  end
   config.vm.define "HLpgConpool01" do |c|
     c.vm.hostname = "hl-pg-conpool01"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2233, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
   config.vm.define "HLpgConpool02" do |c|
     c.vm.hostname = "hl-pg-conpool02"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2234, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
   end
   config.vm.define "HLdcs01" do |c|
     c.vm.hostname = "hl-dcs01"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2251, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+    c.vm.network "forwarded_port", adapter: 1, guest: 8500, host: 4003, host_ip: '127.0.0.1'
   end
   config.vm.define "HLdcs02" do |c|
     c.vm.hostname = "hl-dcs02"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2252, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+    c.vm.network "forwarded_port", adapter: 1, guest: 8500, host: 4004, host_ip: '127.0.0.1'
   end
   config.vm.define "HLdcs03" do |c|
     c.vm.hostname = "hl-dcs03"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2253, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+    c.vm.network "forwarded_port", adapter: 1, guest: 8500, host: 4005, host_ip: '127.0.0.1'
   end
-#  config.vm.define "HLetcd" do |c|
-#    c.vm.hostname = "hl-etcd"
-#    c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2421, id: "ssh", host_ip: '127.0.0.1'
-#  end
   config.vm.define "HLpg01" do |c|
     c.vm.hostname = "hl-pg01"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2521, id: "ssh", host_ip: '127.0.0.1'
@@ -163,12 +137,12 @@ Vagrant.configure("2") do |config|
   config.vm.define "HLzabbix02" do |c|
     c.vm.hostname = "hl-zabbix02"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2921, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+    c.vm.network "forwarded_port", adapter: 1, guest: 8080, host: 4007, host_ip: '127.0.0.1'
   end
   config.vm.define "HLzabbix01" do |c|
     c.vm.hostname = "hl-zabbix01"
     c.vm.network "forwarded_port", adapter: 1, guest: 22, host: 2821, id: "ssh", host_ip: '127.0.0.1'
-    c.vm.network "public_network", adapter: 3, bridge: "wlp2s0"
+    c.vm.network "forwarded_port", adapter: 1, guest: 8080, host: 4006, host_ip: '127.0.0.1'
   end
 
   MACHINES.each do |boxname, boxconfig|
@@ -177,12 +151,6 @@ Vagrant.configure("2") do |config|
 
         box.vm.box = boxconfig[:box_name]
         box.vm.box_check_update = false
-        #box.vm.host_name = boxname.to_s
-
-        #BUGGY!!!
-        #box.vm.synced_folder "for_mysql_dump/", "/tmp/for_mysql_dump", type: "rsync"
-        #box.vbguest.auto_update = true
-        #box.vbguest.auto_update = false
 
         boxconfig[:net].each do |ipconf|
           box.vm.network "private_network", ipconf
@@ -194,9 +162,7 @@ Vagrant.configure("2") do |config|
 
         box.vm.provider "virtualbox" do |v|
           v.customize ["modifyvm", :id, "--audio", "none"]
-          #v.memory = "512"
           v.memory = "768"
-          #v.memory = "1024"
           v.cpus = "1"
         end
 
