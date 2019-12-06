@@ -176,13 +176,13 @@ Vagrant.configure("2") do |config|
 
         box.vm.provision "ansible" do |ansible|
           ansible.verbose = "v"
-          ansible.playbook = "provisioning/HA/00_all.yml"
-          ansible.inventory_path = "provisioning/HA/hosts_vagrant"
-          ansible.extra_vars = "provisioning/HA/variables"
+          ansible.playbook = "provisioning/00_all.yml"
+          ansible.inventory_path = "provisioning/hosts_vagrant"
+          ansible.extra_vars = "provisioning/variables"
           ansible.become = "true"
           #ansible.tags = "update_hosts"
           #ansible.limit = "web"
-          #ansible.config_file = "provisioning/HA/ansible.cfg"
+          #ansible.config_file = "provisioning/ansible.cfg"
         end
 
       end

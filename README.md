@@ -82,10 +82,10 @@ http: яндекс.танк, [https://locust.io/](https://locust.io/), Siege\
 
 Для провижининга на хостовой машине требуется ansible >= 2.9, т.к. в модуле ```mount``` используется параметр ```state``` со значением ```remounted```.
 
-В плейбуках ansible используются переменные, которые описаны в файле [variables](provisioning/HA/variables). Если нужно изменить имя сервера, то кроме файла variables необходимо проверить файл [hosts](provisioning_proxmox/HA/hosts) или [hosts_vagrant](provisioning/HA/hosts_vagrant) (если используется vagrant) и play-файлы плейбуков на соответствие имён серверов.
+В плейбуках ansible используются переменные, которые описаны в файле [variables](provisioning/variables). Если нужно изменить имя сервера, то кроме файла variables необходимо проверить файл [hosts](provisioning_proxmox/hosts) или [hosts_vagrant](provisioning/hosts_vagrant) (если используется vagrant) и play-файлы плейбуков на соответствие имён серверов.
 В play-файлах плейбуков учтено использование разных имён серверов из разных инвентори (hosts и hosts_vagrant).
 
-При выполнении роли [07_zabbix_createDB](provisioning/HA/roles/07_zabbix_createDB/tasks/main.yml) происходит удаление и повторное создание БД и пользователя zabbix в postgresql, если эти объекты ранее существовали. Если этот функционал не нужен, то можно это закомментировать.
+При выполнении роли [07_zabbix_createDB](provisioning/roles/07_zabbix_createDB/tasks/main.yml) происходит удаление и повторное создание БД и пользователя zabbix в postgresql, если эти объекты ранее существовали. Если этот функционал не нужен, то можно это закомментировать.
 
 Роли для провижининга на стенд proxmox расположены в соответствующем [каталоге](provisioning_proxmox/).
 
