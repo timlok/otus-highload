@@ -45,6 +45,7 @@
 
 <details><summary>ansible (нажать, чтобы открыть)</summary><p>
 
+---
 Для провижининга на хостовой машине требуется ansible >= 2.9, т.к. в модуле <code>mount</code> используется параметр <code>state</code>  со значением <code>remounted</code> .
 
 Роли для провижининга на стенд Vagrant расположены в каталоге [provisioning](provisioning/).
@@ -54,10 +55,13 @@
 В плейбуках ansible используются переменные, которые описаны в файле [variables](provisioning/variables) для Vagrant и в файле [variables](provisioning_proxmox/variables) если используется вариант для Proxmox. Если нужно изменить имя сервера, то кроме файла variables необходимо проверить файл [hosts](provisioning_proxmox/hosts), [hosts_ip](provisioning_proxmox/hosts_ip) или [hosts_vagrant](provisioning/hosts_vagrant) если используется vagrant.
 
 При выполнении роли [08_zabbix/04_zabbix_createDB](provisioning/roles/08_zabbix/04_zabbix_createDB/tasks/main.yml) (пример для Vagrant) происходит удаление и повторное создание БД и пользователя zabbix в postgresql, если эти объекты ранее существовали. Если этот функционал не нужен, то можно это закомментировать.
+
+---
 </p></details>
 
 <details><summary>web (zabbix) (нажать, чтобы открыть)</summary><p>
 
+---
 Для реализации распределения и балансировки http-трафика web-части сервера zabbix расположены на разных ВМ но настроены на работу с одним zabbix-server. При этом, отказоустойчивость web реализована избыточностью ВМ, а отказоустойчивость zabbix-server и mamonsu с помощью pacemaker/corosync.
 
 Web-интерфейс zabbix работает на каждой ноде zabbix по адресу http://имя_или_адрес_любой_ноды:8080/zabbix. Так же, web-интерфейс доступен, в т. ч. и для нагрузочных тестов на VIP-адресе http-балансировщиков <a href="http://hl-balancer-vip.otus/zabbix">http://hl-balancer-vip.otus/zabbix</a>
@@ -67,16 +71,22 @@ Web-интерфейс zabbix работает на каждой ноде zabbix
 <a href="http://hl-balancer-vip.otus/zabbix/index.php?enter=guest">http://hl-balancer-vip.otus/zabbix/index.php?enter=guest</a>
 
 Для автоматической регистрации агентов в web-интерфейсе zabbix достаточно создать соответствующие правила на основе HostMetadata: для zabbix-серверов <code>HostMetadata=hlotusserver</code>, для всех остальных ВМ (они являются клиентами по отношению к zabbix-серверам) <code>HostMetadata=hlotusclient</code>.
+
+---
 </p></details>
 
 <details><summary>мониторинг СУБД (нажать, чтобы открыть)</summary><p>
 
+---
 Мониторинг параметров СУБД PostgreSql реализован с помощью утилиты <a href="https://postgrespro.ru/products/extensions/mamonsu">mamonsu</a> от компании PotgresPro.
 В моём стенде это ПО устанавливается на обе ноды сервера zabbix и настраивается на мониторинг текущего мастер-сервера БД, в т.ч. импортируется соответствующий шаблон zabbix. Конечно, в каждый момент времени работает только один экземпляр mamonsu. Это достигнуто в результате кластеризации с помощью pacemaker/corosync и введения ограничений на расположение и связанность ресурсов.
+
+---
 </p></details>
 
 <details><summary>pacemaker/corosync (нажать, чтобы открыть)</summary><p>
 
+---
 Web-интерфейс кластера <a href="https://hl-zabbix-vip.otus:2224">https://hl-zabbix-vip.otus:2224</a> или <a href="https://10.51.21.56:2224">https://10.51.21.56:2224</a> (или https://имя_или_адрес_любой_ноды:2224)
 
 Кластер работает в режиме active/passive. Zabbix-агенты обращаются к ресурсу cluster_vip и на него же настроены фронтенды на обоих нодах. Таким образом, и агенты zabbix и web-части zabbix работают только с одним активным процессом zabbix-server и все обращения к БД полностью корректны.
@@ -90,10 +100,13 @@ Web-интерфейс кластера <a href="https://hl-zabbix-vip.otus:2224
 Все ресурсы кластера запускаются на одной ноде.
 Кластер успешно переживает жёсткое отключение одной из нод.
 При убийстве любого из контролируемых сервисов (ресурсов), этот ресурс успешно поднимается на той же самой ноде в течении интервала времени, указанного при создании ресурса.
+
+---
 </p></details>
 
 <details><summary>postgresql/patroni (нажать, чтобы открыть)</summary><p>
 
+---
 Кластер postgresql/patroni отказоустойчивый, реплики работают в асинхронном режиме. Подключение к БД postgresql ограничено в pg_hba.conf (patroni) только сетью 10.51.21.0/24.
 
 К сожалению, со стороны приложения (Zabbix) нет возможности каким-либо образом настроить отправку read-only запросов на другую реплику или БД.
@@ -104,16 +117,20 @@ Web-интерфейс кластера <a href="https://hl-zabbix-vip.otus:2224
 [Pgpool-II](https://www.pgpool.net/mediawiki/index.php/Main_Page) - Кроме прочего, позволяет балансировать RW- и RO-запросы на разные ноды и задействовать кеш запросов в ОЗУ. Но всё это работает только в том случае, если управление кластером БД настроено с помощью самого pgpool-II. При попытках настроить балансировку и/или кеш без управления кластером все форки pgpool-II начинают стабильно падать с ошибками сегментации.
 
 [SQL Rrelay](http://sqlrelay.sourceforge.net/index.html) - Полноценный sql-прокси с анализом и модификацией sql-запросов. Если клиентское ПО умеет работать с postgresql, то требуется подключение собственной встраиваемой библиотеки через LD_PRELOAD. В итоге, psql отлично работает с этой библиотекой, а php-fpm и zabbix-server не могут с ней работать.
+
+---
 </p></details>
 
 <details><summary>DCS (consul) (нажать, чтобы открыть)</summary><p>
 
+---
 На каждом сервере с репликой БД в режиме клиента работает локальный агент consul. Именно к этому агенту обращаются patroni и vip-manager за данными из key/value-хранилища. Помимо связи с кластером consul этот агент так же обеспечивает добавление сервиса postgresl в service discovery.
 
 Схема взаимодействия patroni и vip-manager с consul
 
 ![scheme/consul.png](scheme/consul.png)
 
+---
 </p></details>
 
 ## Реализация
@@ -130,6 +147,7 @@ Web-интерфейс кластера <a href="https://hl-zabbix-vip.otus:2224
 
 <details><summary>Запуск стенда: (нажать, чтобы открыть)</summary><p>
 
+---
 Клонируем репозиторий:
 
 ```bash
@@ -148,6 +166,7 @@ cd otus-highload
 vagrant up
 ```
 
+---
 </p></details>
 
 Средняя продолжительность разворачивания стенда при последовательном запуске ВМ ~ 1 час 49 минут на ноутбуке dell vostro 5471-4648 (i5-8250u, 16 ГБ ОЗУ, файлы ВМ на SATA-ssd CT500MX500SSD1N)
@@ -175,6 +194,7 @@ HLzabbix02 [http://127.0.0.1:4007/zabbix](http://127.0.0.1:4007/zabbix) - web-и
 
 <details><summary>Запуск стенда: (нажать, чтобы открыть)</summary><p>
 
+---
 Клонируем репозиторий:
 
 ```bash
@@ -199,6 +219,7 @@ ansible-playbook -v --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHo
 ansible-playbook -v --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' 00_all.yml --extra-vars @variables
 ```
 
+---
 </p></details>
 
 ## Нагрузочное тестирование с помощью яндекс.танк и оптимизация стенда
@@ -207,6 +228,7 @@ ansible-playbook -v --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHo
 
 <details><summary>locast (нажать, чтобы открыть)</summary><p>
 
+---
 Тестирование выполнялось в начале работы над проектом и перед тестом никаких оптимизаций ещё не было сделано. Так же, тест носил пробный характер и не принимался во внимание. Тем не менее, файлы конфигурации находятся [здесь](tests/locust/), а результаты проведения теста приведены [здесь.](tests/locust/results)
 
 Установка locustio
@@ -226,6 +248,8 @@ locust -f locust_zabbix.py --host=http://10.51.21.56:8080
 ```
 
 После этого для запуска тестирования через web-интерфейс открываем [http://localhost:8089](http://localhost:8089), выставляем желаемые параметры и запускаем тест.
+
+---
 </p></details>
 
 ### Запуск яндекс.танк
