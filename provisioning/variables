@@ -68,16 +68,12 @@ HOST_NAME_WEB02: 'hl-zabbix02'
 HOST_IP_WEB02: '10.51.21.58'
 
 
-##### временно #############################################
-#HOST_NAME_PG_HAPROXY: 'hl-pg-haproxy'
-#HOST_IP_PG_HAPROXY: '10.51.21.59'
-#
-#только для работы в vagrant и при использовании haproxy в качестве точки входа в БД
-#HOST_NAME_PG_CON_POOL_VIP: '{{ HOST_NAME_PG_HAPROXY }}'
-#HOST_IP_PG_CON_POOL_VIP: '{{ HOST_IP_PG_HAPROXY }}'
-############################################################
+
+#свободен 10.51.21.59
 
 #свободен 10.51.21.60
+
+
 
 HOST_NAME_DCS_01: 'hl-dcs01'
 HOST_IP_DCS_01: '10.51.21.61'
@@ -88,9 +84,11 @@ HOST_IP_DCS_02: '10.51.21.62'
 HOST_NAME_DCS_03: 'hl-dcs03'
 HOST_IP_DCS_03: '10.51.21.63'
 
-#временный
-#HOST_NAME_DCS: 'hl-etcd'
-#HOST_IP_DCS: '10.51.21.64'
+
+
+#свободен 10.51.21.64
+
+
 
 HOST_NAME_PG01: 'hl-pg01'
 HOST_IP_PG01: '10.51.21.65'
@@ -105,7 +103,11 @@ HOST_NAME_PG_VIP: 'hl-pg-vip'
 HOST_IP_PG_VIP: '10.51.21.68'
 IP_VIPMANAGER_NIC: 'eth1'
 
+
+
 #свободен 10.51.21.69
+
+
 
 HOST_NAME_HL_CLIENT: 'hl-client'
 HOST_IP_HL_CLIENT: '10.51.21.70'
